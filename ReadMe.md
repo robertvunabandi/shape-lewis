@@ -16,22 +16,23 @@ The main drawback from this method is that every molecules are saved on file. Th
 
 
 Molecules on file: (in alphabetical order)
-CH4
-CH3COOH
-CH3COO^(-)
-CO3^(2-)
-H2O
-N2
-NH3
-NH4^(+)
-NO2^(-)
-NO3^(-)
-OH^(-)
-PO4^(3-)
-SCl2
-XeF2
-XeF3+
-XeO3
+
+CH4  
+CH3COOH  
+CH3COO^(-)  
+CO3^(2-)  
+H2O  
+N2  
+NH3  
+NH4^(+)  
+NO2^(-)  
+NO3^(-)  
+OH^(-)  
+PO4^(3-)  
+SCl2  
+XeF2  
+XeF3+  
+XeO3  
 
 TOADD:
 
@@ -49,8 +50,7 @@ CN^(-)
 COCl2
 HCN
 HCO^(+)
-HCO3^(-)ls
-
+HCO3^(-)
 H2CO3
 H2S
 H2CNN
