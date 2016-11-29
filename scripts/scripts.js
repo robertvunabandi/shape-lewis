@@ -195,20 +195,20 @@ function displayMolecule(molecule) {
 		case "nh4+1": case "NH4+1": case "nh4^+1": case "nh4^(+1)": case "nh4^+": case "nh4^(+)": case "nH4^+1": case "nH4^(+1)": case "nH4^+":
 		case "nH4^(+)": case "Nh4^+1": case "Nh4^(+1)": case "Nh4^+": case "Nh4^(+)": case "NH4^+1": case "NH4^(+1)": case "NH4^+":
 		case "NH4^(+)":{
-					document.getElementById("drawingSpace").innerHTML = "<svg viewbox ='0 0 500 200' id='drawn'></svg>";
+					dSChange.innerHTML = initialValueOfDS;
 					line("(205)(100)_(235)(100)"); line("(265)(100)_(295)(100)");
 					line("(249)(55)_(249)(85)"); line("(249)(115)_(249)(145)");
 					element("N", "(24.28)(8.85)");
 					element("H", "(18.6)(8.85)"); element("H", "(30)(8.85)");
 					element("H", "(24.22)(2.9)"); element("H", "(24.22)(14.7)");
 					element("+", "(25.6)(7.4)");
-					document.getElementById("smallDisplay").innerHTML = "NH4^(+), ammonium";
-					document.getElementById("bigDisplay").innerHTML = "";
+					sDChange.innerHTML = "NH4^(+), ammonium";
+					bDChange.innerHTML = "";
 				}
 		break;
 		case "no2-": case "NO2-": case "No2^-": case "No2^(-)": case "nO2^-": case "nO2^(-)": case "no2^-": case "no2^(-)": case "NO2^-":
 		case "NO2^(-)":{
-					document.getElementById("drawingSpace").innerHTML = "<svg viewbox ='0 0 500 200' id='drawn'></svg>";
+					dSChange.innerHTML = initialValueOfDS;
 					line("(205)(97.5)_(235)(97.5)"); line("(205)(102.5)_(235)(102.5)");
 					line("(264)(100)_(294)(100)");
 					element("N", "(24.25)(8.85)"); 
@@ -218,13 +218,13 @@ function displayMolecule(molecule) {
 					dot("(319.5)(96)"); dot("(319.5)(104)"); //Vertical on O's
 					dot("(246)(114)"); dot("(254)(114)"); //Horizontal on Middle O
 					element("-", "(32.02)(6.85)");
-					document.getElementById("smallDisplay").innerHTML = "NO2^(-), nitrite ion";
-					document.getElementById("bigDisplay").innerHTML = linksToResonance + "<br>" + about("resonance");
+					sDChange.innerHTML = "NO2^(-), nitrite ion";
+					bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
 				}
 		break;
 		case "no3-": case "NO3-": case "nO3^-": case "nO3^(-)": case "no3^-": case "NO3^-": case "no3^(-)":
 		case "NO3^(-)":{
-					document.getElementById("drawingSpace").innerHTML = "<svg viewbox ='0 0 500 200' id='drawn'></svg>";
+					dSChange.innerHTML = initialValueOfDS;
 					line("(205)(100)_(235)(100)"); line("(264)(100)_(294)(100)");
 					line("(246.5)(115)_(246.5)(145)"); line("(251.5)(115)_(251.5)(145)");
 					element("N", "(24.25)(8.85)"); 
@@ -236,26 +236,26 @@ function displayMolecule(molecule) {
 					dot("(263)(153)"); dot("(263)(161)"); //Vertical on Bottom O
 					dot("(236)(153)"); dot("(236)(161)"); //Vertical on Bottom O
 					element("-", "(20.42)(6.85)"); element("-", "(32.02)(6.85)"); element("+", "(25.4)(7.35)");
-					document.getElementById("smallDisplay").innerHTML = "NO3^(-), nitrate ion";
-					document.getElementById("bigDisplay").innerHTML = linksToResonance + "<br>" + about("resonance");
+					sDChange.innerHTML = "NO3^(-), nitrate ion";
+					bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
 				}
 		break;
 		case "oh^-": case "oh^(-)": case "oH^-": case "oH^(-)": case "Oh^-": case "Oh^(-)": case "OH^-":
 		case "OH^(-)":{
-					document.getElementById("drawingSpace").innerHTML = "<svg viewbox ='0 0 500 200' id='drawn'></svg>";
+					dSChange.innerHTML = initialValueOfDS;
 					line("(235)(100)_(265)(100)");
 					element("O", "(21.6)(8.8)"); element("H", "(27.0)(8.8)");
 					dot("(211)(96)"); dot("(211)(104)"); 
 					dot("(219.65)(87)"); dot("(227.65)(87)"); 
 					dot("(219.65)(112)"); dot("(227.65)(112)"); 
 					element("-", "(23.3)(7.7)");
-					document.getElementById("smallDisplay").innerHTML = "OH^(-), hydroxide";
-					document.getElementById("bigDisplay").innerHTML = "";
+					sDChange.innerHTML = "OH^(-), hydroxide";
+					bDChange.innerHTML = "";
 				}
 		break;
 		case "pO4^-3": case "pO4^(-3)": case "pO4^3-": case "pO4^(3-)": case "PO4^-3": case "PO4^(-3)": case "PO4^3-": 
 		case "PO4^(3-)":{
-					document.getElementById("drawingSpace").innerHTML = "<svg viewbox ='0 0 500 200' id='drawn'></svg>";
+					dSChange.innerHTML = initialValueOfDS;
 					line("(205)(100)_(235)(100)"); line("(265)(100)_(295)(100)");
 					line("(250)(55)_(250)(85)"); 
 					line("(246.5)(115)_(246.5)(145)"); line("(251.5)(115)_(251.5)(145)");
@@ -270,11 +270,11 @@ function displayMolecule(molecule) {
 					dot("(236)(153)"); dot("(236)(161)"); dot("(236)(38)"); dot("(236)(46)");
 					element("-", "(20.42)(6.85)"); element("-", "(32.02)(6.85)"); element("-", "(26)(1.0)");
 					sDChange.innerHTML = "PO4^(3-), phosphate";
-					document.getElementById("bigDisplay").innerHTML = "";
+					bDChange.innerHTML = "";
 				}
 		break;
 		case "sCl2": case "scl2": case "SCl2":{
-					document.getElementById("drawingSpace").innerHTML = "<svg viewbox ='0 0 500 200' id='drawn'></svg>";
+					dSChange.innerHTML = initialValueOfDS;
 					line("(210)(100)_(240)(100)"); line("(265)(100)_(295)(100)");
 					element("S", "(24.58)(8.85)");
 					element("Cl", "(18.6)(8.85)"); element("Cl", "(30)(8.85)");
@@ -284,11 +284,11 @@ function displayMolecule(molecule) {
 					dot("(192)(113)"); dot("(200)(113)"); dot("(305)(113)"); dot("(314)(113)"); //Bottom horizontal
 					dot("(180)(96)"); dot("(180)(104)"); dot("(324)(96)"); dot("(324)(104)"); //Vertical
 					sDChange.innerHTML = "SCl2, sulfur dichloride";
-					document.getElementById("bigDisplay").innerHTML = "";
+					bDChange.innerHTML = "";
 				}
 		break;
 		case "xef2": case "Xef2": case "XeF2": case "XEF2":{
-					document.getElementById("drawingSpace").innerHTML = "<svg viewbox ='0 0 500 200' id='drawn'></svg>";
+					dSChange.innerHTML = initialValueOfDS;
 					line("(205)(100)_(235)(100)"); line("(275)(100)_(305)(100)");
 					element("Xe", "(24.28)(8.85)");
 					element("F", "(18.6)(8.85)"); element("F", "(31)(8.85)");
@@ -297,13 +297,13 @@ function displayMolecule(molecule) {
 					dot("(188)(86)"); dot("(196)(86)"); dot("(313)(86)"); dot("(321)(86)"); 
 					dot("(188)(113)"); dot("(196)(113)"); dot("(313)(113)"); dot("(321)(113)"); 
 					dot("(180)(96)"); dot("(180)(104)"); dot("(328)(96)"); dot("(328)(104)");
-					document.getElementById("smallDisplay").innerHTML = "XeF2, xenon difluoride";
-					document.getElementById("bigDisplay").innerHTML = "";
+					sDChange.innerHTML = "XeF2, xenon difluoride";
+					bDChange.innerHTML = "";
 				}
 		break;
 		case "xeF3+": case "xeF3^+":case "xeF3^(+)":case "xef3+": case "xef3^+":case "xef3^(+)":case "Xef3+": case "Xef3^+":case "Xef3^(+)":case "XeF3+":case "XeF3^+":
 		case "XeF3^(+)":{
-					document.getElementById("drawingSpace").innerHTML = "<svg viewbox ='0 0 500 200' id='drawn'></svg>";
+					dSChange.innerHTML = initialValueOfDS;
 					line("(205)(100)_(235)(100)"); line("(275)(100)_(305)(100)"); //Horizontal lines
 					line("(255)(57)_(255)(87)");
 					element("Xe", "(24.28)(8.85)");
@@ -317,12 +317,12 @@ function displayMolecule(molecule) {
 					dot("(252)(31)"); dot("(260)(31)"); //Horizontal on top F
 					element("+", "(26.08)(7.35)");
 					sDChange.innerHTML = "XeF3^(+), xenon trifluoride";
-					document.getElementById("bigDisplay").innerHTML = "";
+					bDChange.innerHTML = "";
 				}
 
 		break;
 		case "xeo3": case "XEO3": case "Xeo3": case "XeO3":{
-					document.getElementById("drawingSpace").innerHTML = "<svg viewbox ='0 0 500 200' id='drawn'></svg>";
+					dSChange.innerHTML = initialValueOfDS;
 					line("(205)(97.5)_(235)(97.5)"); line("(266)(97.5)_(296)(97.5)");
 					line("(205)(102.5)_(235)(102.5)"); line("(266)(102.5)_(296)(102.5)");
 					line("(246.5)(115)_(246.5)(145)"); line("(251.5)(115)_(251.5)(145)");
@@ -334,14 +334,15 @@ function displayMolecule(molecule) {
 					dot("(263)(153)"); dot("(263)(161)"); //Vertical on Bottom O
 					dot("(236)(153)"); dot("(236)(161)"); //Vertical on Bottom O
 					dot("(246.5)(87.5)"); dot("(254.5)(87.5)"); //horizontal on middle O
-					document.getElementById("smallDisplay").innerHTML = "XeO3, xenon trioxide";
-					document.getElementById("bigDisplay").innerHTML = "";
+					sDChange.innerHTML = "XeO3, xenon trioxide";
+					bDChange.innerHTML = "";
 				}
 		break;
 		default:{
-					document.getElementById("drawingSpace").innerHTML = "<span style='position: absolute; font-size: 1.5rem; text-transform: uppercase; text-align: centered; left: 0rem; top: 6.5rem;' > The molecule entered is not saved in our library. Please make sure you have followed the guidelines for syntax, or submit this molecule on the submission on the right so that we can add it. Thanks.</span>";
-					document.getElementById("smallDisplay").innerHTML = "<span style='color:rgba(150,0,0,1); text-decoration: line-through;'>"+molecule+"</span>";
-					document.getElementById("bigDisplay").innerHTML = "";
+					//initialValueOfDS = "<svg viewbox ='0 0 500 200' id='drawn'></svg>"
+					dSChange.innerHTML = "<span style='position: absolute; font-size: 1.5rem; text-transform: uppercase; text-align: centered; left: 0rem; top: 6.5rem;'> The molecule entered is not saved in our library. Please make sure you have followed the guidelines for syntax, or submit this molecule on the submission on the right so that we can add it. Thanks.</span>";
+					sDChange.innerHTML = "<span style='color:rgba(150,0,0,1); text-decoration: line-through;'>"+molecule+"</span>";
+					bDChange.innerHTML = "";
 				}
 		break;
 	}
