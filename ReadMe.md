@@ -4,9 +4,11 @@ The goal of this project is to create a way to visualize the shape of molecules.
 
 To create an algorithm that accounts for all the elements and shapes would be too difficult. Here is an example that does so: 
 
+```
 // https://pubchem.ncbi.nlm.nih.gov/pug_rest/PUG_REST_Tutorial.html#_Toc458584410
 // I could potentially use the website above, but I don't get it yet. 
-// Look for "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/vioxx" on the website! 
+// Look for "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/vioxx" on the website!
+```
 
 This is also in the JS as a comment. I preferred using SVG to draw shapes. I created functions called "line" to draw lines, "dot" to place dots, and "element" to place a text on the "canvas" or drawingSpace in the HTML. There is also a function that recognizes direction in the form of "(x1)(y1)_(x2)(y2)", and this helps placing elements in the SVG.
 
