@@ -1,0 +1,164 @@
+
+
+* {
+	font-family: menlo;
+	
+}
+
+#enterMolecule {
+	font-size: 2rem; 
+	text-align: center;
+}
+
+#time {
+	text-align: right;
+	position: absolute; top: 7rem; min-width: 99%; font-weight: bolder; 
+	transition: text-shadow 300ms, color 300ms;
+}
+#time:hover{
+	color: white;
+	text-shadow: -0.1rem 0rem rgba(0,0,0,1), 0rem 0.1rem rgba(0,0,0,1), 0.1rem 0rem rgba(0,0,0,1), 0rem -0.1em rgba(0,0,0,1),  0rem -0.3em rgba(0,0,0,1);
+}
+
+header {
+	text-align: center;
+	position: relative;
+	margin: 0rem auto; padding: 0rem;
+}
+
+// header, section, article, aside, footer {
+// 	position: relative;
+// }
+
+.title {
+	text-align: center;
+	transition: color 300ms, text-shadow 300ms; font-size: 7rem; padding: 0 0.2rem; 
+}
+
+.title:hover {
+	color: rgba(255,255,255,1);
+	text-shadow: -0.37rem 0 rgba(80,80,80,1), 0 0.37rem rgba(80,80,80,1), 0.37rem 0 rgba(80,80,80,1), 0 -0.37rem rgba(80,80,80,1), -0.67rem 0 rgba(255,0,0,0.2), 0 0.67rem rgba(255,0,0,0.2), 0.67rem 0 rgba(255,0,0,0.2), 0 -0.67rem rgba(255,0,0,0.2);
+	fill:white;
+}
+
+#drawingSpace {
+	font-family: Times !important;
+	position: relative; min-height: 20rem; max-height: 20rem; min-width: 50rem; max-width: 50rem; 
+	overflow: scroll; margin: 0.4rem auto;
+	border: 0.1rem solid rgba(0,0,0,0.1); //border-radius: 15rem;
+	box-shadow: inset 0rem 0rem 0.5rem 0.2rem rgba(0,0,0,0.1);
+	transition: border 150ms, margin 150ms, box-shadow 300ms;
+}
+
+#smallDisplay, #bigDisplay {
+	position: relative;
+	margin: 0.4rem auto;
+	overflow: scroll;
+	box-shadow: inset 0rem 0rem 0.5rem 0.2rem rgba(0,0,0,0.1);
+	transition: border 150ms, margin 150ms, box-shadow 300ms;
+	
+}
+
+#smallDisplay {
+	font-size: 1.3rem;
+	min-height: 1.9rem; max-height: 1.9rem; min-width: 25rem; max-width: 25rem; 
+	padding-top: 0.4rem; overflow: scroll;
+}
+
+#bigDisplay {
+	min-height: 9rem; max-height: 9rem; min-width: 50rem; max-width: 50rem;
+	font-size: 1.2rem;
+	span {
+		position: relative; top: 1rem;
+	}
+}
+
+#drawingSpace:hover {
+	box-shadow: inset 0rem 0rem 4rem 0.5rem rgba(0,0,0,0.1);
+}
+
+#smallDisplay:hover, #bigDisplay:hover {
+	box-shadow: inset 0rem 0rem 1.5rem 0.5rem rgba(0,0,0,0.1);
+}
+
+#drawn {
+	max-width: 50rem; max-height: 20rem;
+	min-width: 50rem; min-height: 20rem;
+	/*This represent the drawn strokes*/
+}
+
+/*SVG ELEMENTS NEXT*/
+
+svg {
+	line {
+		stroke: rgba(0,0,0,1); 
+		stroke-width: 2;
+		display: inline;
+	}
+}
+
+article {
+	position: relative; max-width: 32%; min-width: 32%; min-height: 25rem; max-height: auto;
+	background-color: rgba(0,0,0,0.1);
+	padding: 0.3rem 1.5% 0% 1.5%; float: right;
+	h1, h2, h3, h4, h5, h6 {
+		// font-size: 1.5rem;
+		padding-bottom: 0.5rem !important; padding-top: 0rem; margin-top: 0rem;
+	}
+	span {
+		font-size: 1.5rem; font-weight: bold; display: inline;
+	}
+	p, ol {
+		font-size: 0.9rem;
+		margin: auto 0rem;
+		text-align: left !important;
+		input {
+			font-size: 1.5rem;
+			max-width: 20rem;
+		}
+	}
+	span {
+		transition: text-shadow 400ms, color 300ms;
+	}
+	span:hover {
+		color: white;
+		text-shadow: -0.1rem 0rem rgba(0,0,0,1), 0rem 0.1rem rgba(0,0,0,1), 0.1rem 0rem rgba(0,0,0,1), 0rem -0.1em rgba(0,0,0,1);
+	}
+}
+
+section {
+	position: relative; max-width: 65%; min-width: 65%; float: left; text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	padding: 0rem; margin: 0rem;
+}
+
+// LINKS!
+
+a:link {
+	text-decoration: none;
+	font-weight: bold;
+	color: black;
+	text-shadow: 0.15rem 0.15rem rgba(255,0,0,0.05), -0.15rem -0.15rem rgba(255,0,0,0.05), -0.15rem 0.15rem rgba(255,0,0,0.05), 0.15rem -0.15rem rgba(255,0,0,0.05), 0.1rem 0.1rem rgba(255,255,255,1), -0.1rem -0.1rem rgba(255,255,255,1), -0.1rem 0.1rem rgba(255,255,255,1), 0.1rem -0.1rem rgba(255,255,255,1);
+	transition: text-shadow 400ms, color 200ms, font-weight 200ms;
+}
+
+a:hover {
+	text-shadow: 0.2rem 0.2rem rgba(0,0,0,0.2), -0.2rem -0.2rem rgba(0,0,0,0.08);
+	font-weight: bolder;
+	color: rgba(90,90,90,1);
+}
+
+a:active {
+	text-shadow: 0.1rem 0.1rem rgba(0,0,0,1), -0.1rem -0.1rem rgba(0,0,0,1);
+	color: white;
+}
+
+a:visited {
+	@extend a:link;
+}
+
+
+
+

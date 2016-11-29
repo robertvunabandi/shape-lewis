@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Shape Lewis</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+	<script type="text/javascript" src="scripts/scripts.js"></script>
+	<link rel="stylesheet" type="text/css" href="stylesheets/stylesheets.css">
+</head>
+<body>
+<div id="body">
+	<header>
+	<span class='title'>S</span><span class='title'>h</span><span class='title'>a</span><span class='title'>p</span><span class='title'>e</span><span class='title'> </span><span class='title'>L</span><span class='title'>e</span><span class='title'>w</span><span class='title'>i</span><span class='title'>s</span><br>
+	<span id="time"></span>
+	<svg viewbox="0 0 100 1">
+  		<line x1="0" y1="0" x2="100" y2="0" stroke-width="1" stroke="black"/>
+	</svg>
+	</header>
+	
+	<section>
+		<!-- <input type="text" placeholder="Enter molecule" id="enterMolecule" onchange="draw('line','(0)(0)_(500)(200)')"> -->
+		<input type="text" placeholder="Enter molecule" id="enterMolecule" onchange="displayMolecule(this.value);">
+		<div id="drawingSpace">
+			<svg viewbox ='0 0 500 200' id='drawn'>
+			</svg>
+			<!-- <span style="position: absolute; left: 25rem; top: 10rem;">HO</span> -->
+		</div>
+		<div id="smallDisplay">
+			
+		</div>
+		<div id="bigDisplay">
+			
+		</div>
+	</section>
+
+	<article>
+	<h1><span class=''>G</span><span class=''>u</span><span class=''>i</span><span class=''>d</span><span class=''>e</span><span class=''>l</span><span class=''>i</span><span class=''>n</span><span class=''>e</span><span class=''>s</span><br></h1>
+	<p>
+	This will help you see the Lewis structure of the molecule that you type in. Here are the guidelines for typing numbers in:
+		<ol>
+		<li>Any number would go as a subscript. For example, dihydrogen oxide would be H2O.</li>
+		<li>In order to write superscripts, write use ^(superscript). For example, fluorine ion would be F^(-)</li>
+		<li>Sometimes, the element you are looking for may not be saved in our library. If that happens, please submit that element here: <form action="toAdd.php" method="post"><input type="text" name="moleculeToAdd" id="moleculeToAdd"></li></form> 
+		<li>Press the key "enter" to submit!</li>
+		</ol>
+	<br>
+	Sometimes, a "+" or "-" sign appears on the top right corner of an element: this is the formal charge of the element. Links to formal charge: <a href="https://en.wikipedia.org/wiki/Formal_charge">Wikipedia</a>, and <a href="http://www.masterorganicchemistry.com/2010/09/24/how-to-calculate-formal-charge/">Master Organic Chemistry</a>.
+	<br>
+	Be aware of isomers: Unless relevant, only one time of isomers are drawn. 
+	<br>
+	<span class=''>E</span><span class=''>n</span><span class=''>j</span><span class=''>o</span><span class=''>y</span><span class=''>!</span>
+	<br><br>
+	</p>
+	</article>
+	<footer></footer>
+</div>
+</body>
+</html>
