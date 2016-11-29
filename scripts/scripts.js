@@ -1,6 +1,8 @@
-// https://pubchem.ncbi.nlm.nih.gov/pug_rest/PUG_REST_Tutorial.html#_Toc458584410
-// I could potentially use the website above, but I don't get it yet. 
-// Look for "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/vioxx" on the website! After compound, put the name of molecule and put either png or json
+/*
+git add —-all
+git commit -m’<message>’
+git push origin master
+*/
 
 $('moleculeToAdd').click(function()
 {
