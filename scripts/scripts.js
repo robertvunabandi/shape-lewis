@@ -398,13 +398,3 @@ function about(molecule){
 	}
 	return result;
 }
-
-
-
-/*
-git add —-all
-git commit -m’<message>’
-git push origin master
-*/
-
-
