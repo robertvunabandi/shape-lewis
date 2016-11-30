@@ -1,30 +1,15 @@
-/*
-git add —-all
-git commit -m’<message>’
-git push origin master
-*/
-
-$('moleculeToAdd').click(function()
-{
-    $.ajax({
-        url: toAdd.php,
-        type:'POST',
-        data:
-        {
-            moleculeToAdd: moleculeToAdd,
-        },
-        success: function(msg)
-        {
-            alert('Molecule received');
-        }               
-    });
-});
-
 var myVar = window.setInterval(myTimer, 1000);
-	function myTimer() {
-    	var d = new Date();
-    	document.getElementById("time").innerHTML = d.toLocaleTimeString();
-	}
+function myTimer() {
+    var d = new Date();
+   	document.getElementById("time").innerHTML = d.toLocaleTimeString();
+}
+//The function above is just to keep track of the time.
+/*
+function generateRightViewbox(){
+	Test window, 
+}
+*/
+//The function above is to generate the right viewbox.
 
 function turnWordIntoHtmlElements(text,typeOfElements, name){
 	var result = [];
@@ -49,7 +34,9 @@ function turnSentenceIntoHtmlElements(text, typeOfElements, name){
 }
 
 //--------------------------------------------------------------------------------------------------
-//Below here are all the specific functions
+//Below here are all the specific functions working in the background.
+//These need to be implemented for different browsers and different screen sizes.
+//But I want to make use of frameworks as little as possible, so this might be a bit complicated.
 
 function dot(location){
 	var newLoc = recognizeLineDirection(location);
@@ -91,15 +78,14 @@ function recognizeLineDirection(direction){
 	return array;
 }
 
-
 //--------------------------------------------------------------------------------------------------
-//This right here is going to be the main function!!!
+//This right here is going to be the main function
+//This also needs to be fixed for different browsers and stuffs.
 
 function displayMolecule(molecule) {
-	// molecule = molecule.toUpperCase();
 	var linksToLineStructures = "Links to line structures: <a href='https://en.wikipedia.org/wiki/Skeletal_formula'>Wikipedia</a>, <a href='http://chem.libretexts.org/Core/Organic_Chemistry/Fundamentals/Structure_of_Organic_Molecules'>Chemistry libretexts</a>, and <a href='http://catalog.flatworldknowledge.com/bookhub/reader/2547?e=gob-ch12_s04'> catalog flatworldknowledge</a>.";
 	var linksToResonance = "Links to resonance strucutres: <a href='https://en.wikipedia.org/wiki/Resonance_(chemistry)'>Wikipedia</a>, <a href='http://www.chem.ucla.edu/~harding/tutorials/resonance/draw_res_str.html'>Chem.ucla</a>.";
-	// defining variables to simplify JavaScript
+	// defining variables to simplify the JavaScript
 	var sDChange = document.getElementById("smallDisplay");
 	var bDChange = document.getElementById("bigDisplay");
 	var dSChange = document.getElementById("drawingSpace");
@@ -412,3 +398,13 @@ function about(molecule){
 	}
 	return result;
 }
+
+
+
+/*
+git add —-all
+git commit -m’<message>’
+git push origin master
+*/
+
+

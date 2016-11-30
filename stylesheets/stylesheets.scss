@@ -1,16 +1,27 @@
+$maxW: 50rem;
+$minW: 30rem;
+
 * {
-	font-family: menlo;
-	
+	// font-family: menlo;
+	// font-variant: small-caps;
+	font-family: 'Alegreya Sans SC', sans-serif;
+}
+
+body {
+	position: relative; max-width: 1500px; margin: 0 auto;
 }
 
 #enterMolecule {
 	font-size: 2rem; 
 	text-align: center;
+	position: relative; max-width: $maxW;
+	overflow: hidden; 
 }
 
 #time {
-	text-align: right;
-	position: absolute; top: 7rem; min-width: 99%; font-weight: bolder; 
+	text-align: center !important;
+	position: relative; max-width: 99%; font-weight: bolder; float: bottom; min-height: 1.2rem; 
+	display: block; 
 	transition: text-shadow 300ms, color 300ms;
 }
 #time:hover{
@@ -39,19 +50,42 @@ header {
 	fill:white;
 }
 
+section {
+	position: relative; max-width: 65%; min-width: 65%; 
+	text-align: center; // float: center;
+	margin: 0 auto;
+}
+
 #drawingSpace {
 	font-family: Times !important;
-	position: relative; min-height: 20rem; max-height: 20rem; min-width: 50rem; max-width: 50rem; 
-	overflow: scroll; margin: 0.4rem auto;
+	position: relative; min-height: 20rem; max-height: 20rem; min-width: $minW; max-width: $maxW; 
+	overflow: scroll; margin: 0 auto;
 	border: 0.1rem solid rgba(0,0,0,0.1); //border-radius: 15rem;
 	box-shadow: inset 0rem 0rem 0.5rem 0.2rem rgba(0,0,0,0.1);
-	transition: border 150ms, margin 150ms, box-shadow 300ms;
+	transition: border 150ms, margin 150ms, box-shadow 300ms, font-weight 200ms, stroke-width 200ms;
+	svg {
+		line {
+			stroke: rgba(0,0,0,1); 
+			stroke-width: 1.5;
+			display: inline;
+			transition: stroke-width 300ms;
+		}
+		line:hover {
+			stroke-width: 3;
+		}
+	}
+	span {
+		transition: font-weight 300ms;
+	}
+	span:hover {
+		font-weight: bolder;
+	}
 }
 
 #smallDisplay, #bigDisplay {
-	position: relative;
+	position: relative; min-width: $minW; max-width: $maxW;
 	margin: 0.4rem auto;
-	overflow: scroll;
+	overflow: hidden;
 	box-shadow: inset 0rem 0rem 0.5rem 0.2rem rgba(0,0,0,0.1);
 	transition: border 150ms, margin 150ms, box-shadow 300ms;
 	
@@ -59,12 +93,12 @@ header {
 
 #smallDisplay {
 	font-size: 1.3rem;
-	min-height: 1.9rem; max-height: 1.9rem; min-width: 25rem; max-width: 25rem; 
+	min-height: 1.9rem; max-height: 1.9rem; 
 	padding-top: 0.4rem; overflow: scroll;
 }
 
 #bigDisplay {
-	min-height: 9rem; max-height: 9rem; min-width: 50rem; max-width: 50rem;
+	min-height: 1rem; // max-height: 9rem;
 	font-size: 1.2rem;
 	span {
 		position: relative; top: 1rem;
@@ -87,27 +121,26 @@ header {
 
 /*SVG ELEMENTS NEXT*/
 
-svg {
-	line {
-		stroke: rgba(0,0,0,1); 
-		stroke-width: 2;
-		display: inline;
-	}
-}
+//----------------------------------------------------------------------------------------
+//Starting article!
 
 article {
-	position: relative; max-width: 32%; min-width: 32%; min-height: 25rem; max-height: auto;
-	background-color: rgba(0,0,0,0.1);
+	position: relative; max-width: auto; min-height: 25rem; max-height: auto;
+	background-color: rgba(255,0,0,0.08); 
+	overflow: hidden;
+	box-shadow: inset 0rem 0rem 0.6rem 0.07rem rgba(0,0,0,0.5);
 	padding: 0.3rem 1.5% 0% 1.5%; float: right;
+	font-size: 1rem;
 	h1, h2, h3, h4, h5, h6 {
 		// font-size: 1.5rem;
 		padding-bottom: 0.5rem !important; padding-top: 0rem; margin-top: 0rem;
 	}
 	span {
-		font-size: 1.5rem; font-weight: bold; display: inline;
+		font-weight: bold; display: inline;
+		// font-size: 1.5rem;
 	}
 	p, ol {
-		font-size: 0.9rem;
+		// font-size: 0.9rem;
 		margin: auto 0rem;
 		text-align: left !important;
 		input {
@@ -124,10 +157,6 @@ article {
 	}
 }
 
-section {
-	position: relative; max-width: 65%; min-width: 65%; float: left; text-align: center;
-}
-
 h1, h2, h3, h4, h5, h6 {
 	padding: 0rem; margin: 0rem;
 }
@@ -139,7 +168,7 @@ a:link {
 	font-weight: bold;
 	color: black;
 	text-shadow: 0.15rem 0.15rem rgba(255,0,0,0.05), -0.15rem -0.15rem rgba(255,0,0,0.05), -0.15rem 0.15rem rgba(255,0,0,0.05), 0.15rem -0.15rem rgba(255,0,0,0.05), 0.1rem 0.1rem rgba(255,255,255,1), -0.1rem -0.1rem rgba(255,255,255,1), -0.1rem 0.1rem rgba(255,255,255,1), 0.1rem -0.1rem rgba(255,255,255,1);
-	transition: text-shadow 400ms, color 200ms, font-weight 200ms;
+	transition: text-shadow 200ms, color 200ms, font-weight 200ms;
 }
 
 a:hover {

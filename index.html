@@ -7,21 +7,25 @@
 	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 	<script type="text/javascript" src="scripts/scripts.js"></script>
 	<link rel="stylesheet" type="text/css" href="stylesheets/stylesheets.css">
+	<link href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC:400,900i" rel="stylesheet">
 </head>
 <body>
 <div id="body">
-	<header>
+	<header id="header">
 	<span class='title'>S</span><span class='title'>h</span><span class='title'>a</span><span class='title'>p</span><span class='title'>e</span><span class='title'> </span><span class='title'>L</span><span class='title'>e</span><span class='title'>w</span><span class='title'>i</span><span class='title'>s</span><br>
 	<span id="time"></span>
-	<svg viewbox="0 0 100 1">
+
+	<svg viewbox="0 0 100 1" width="100%">
   		<line x1="0" y1="0" x2="100" y2="0" stroke-width="1" stroke="black"/>
 	</svg>
 	</header>
 	
 	<section>
-		<!-- <input type="text" placeholder="Enter molecule" id="enterMolecule" onchange="draw('line','(0)(0)_(500)(200)')"> -->
+		<span style="color: rgba(150,150,150,1); text-transform: uppercase;">* Guidelines are at the bottom *</span>
+		<br>
 		<input type="text" placeholder="Enter molecule" id="enterMolecule" onchange="displayMolecule(this.value);">
 		<div id="drawingSpace">
+			<!-- HERE IS THE VIEWBOX -->
 			<svg viewbox ='0 0 500 200' id='drawn'>
 			</svg>
 			<!-- <span style="position: absolute; left: 25rem; top: 10rem;">HO</span> -->

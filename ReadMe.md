@@ -16,6 +16,7 @@ The main drawback from this method is that every molecules are saved on file. Th
 
 I have not found any algorithm that can draw Lewis Shapes perfectly without getting data from a database.
 
+One of the reason I used JavaScript instead of JQuery or other frameworks is because I did not want the page to load heavily, as this is targetted towards low income countries where the internet speed is not very fast.
 
 ##Molecules on file: (in alphabetical and increasing number order)
 
