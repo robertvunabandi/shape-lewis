@@ -6,50 +6,44 @@ body {
   max-width: 1500px;
   margin: 0 auto; }
 
-#enterMolecule {
-  font-size: 2rem;
-  text-align: center;
-  position: relative;
-  max-width: 50rem;
-  overflow: hidden; }
-
-#time {
-  text-align: center !important;
-  position: relative;
-  max-width: 99%;
-  font-weight: bolder;
-  float: bottom;
-  min-height: 1.2rem;
-  display: block;
-  transition: text-shadow 300ms, color 300ms; }
-
-#time:hover {
-  color: white;
-  text-shadow: -0.1rem 0rem black, 0rem 0.1rem black, 0.1rem 0rem black, 0rem -0.1em black, 0rem -0.3em black; }
-
 header {
   text-align: center;
   position: relative;
   margin: 0rem auto;
   padding: 0rem; }
-
-.title {
-  text-align: center;
-  transition: color 300ms, text-shadow 300ms;
-  font-size: 7rem;
-  padding: 0 0.2rem; }
-
-.title:hover {
-  color: white;
-  text-shadow: -0.37rem 0 #505050, 0 0.37rem #505050, 0.37rem 0 #505050, 0 -0.37rem #505050, -0.67rem 0 rgba(255, 0, 0, 0.2), 0 0.67rem rgba(255, 0, 0, 0.2), 0.67rem 0 rgba(255, 0, 0, 0.2), 0 -0.67rem rgba(255, 0, 0, 0.2);
-  fill: white; }
+  header .title {
+    text-align: center;
+    transition: color 300ms, text-shadow 300ms;
+    font-size: 7rem;
+    padding: 0 0.2rem; }
+  header .title:hover {
+    color: white;
+    text-shadow: -0.37rem 0 #505050, 0 0.37rem #505050, 0.37rem 0 #505050, 0 -0.37rem #505050, -0.67rem 0 rgba(255, 0, 0, 0.2), 0 0.67rem rgba(255, 0, 0, 0.2), 0.67rem 0 rgba(255, 0, 0, 0.2), 0 -0.67rem rgba(255, 0, 0, 0.2);
+    fill: white; }
+  header #time {
+    text-align: center !important;
+    position: relative;
+    max-width: 99%;
+    font-weight: bolder;
+    float: bottom;
+    min-height: 1.2rem;
+    display: block;
+    transition: text-shadow 300ms, color 300ms; }
+  header #time:hover {
+    color: white;
+    text-shadow: -0.1rem 0rem black, 0rem 0.1rem black, 0.1rem 0rem black, 0rem -0.1em black, 0rem -0.3em black; }
 
 section {
   position: relative;
-  max-width: 65%;
-  min-width: 65%;
+  max-width: 50rem;
   text-align: center;
-  margin: 0 auto; }
+  margin: 0rem auto; }
+  section #enterMolecule {
+    font-size: 2rem;
+    text-align: center;
+    position: relative;
+    max-width: 50rem;
+    overflow: hidden; }
 
 #drawingSpace {
   font-family: Times !important;
@@ -79,7 +73,7 @@ section {
   position: relative;
   min-width: 30rem;
   max-width: 50rem;
-  margin: 0.4rem auto;
+  margin: 0.3rem auto;
   overflow: hidden;
   box-shadow: inset 0rem 0rem 0.5rem 0.2rem rgba(0, 0, 0, 0.1);
   transition: border 150ms, margin 150ms, box-shadow 300ms; }
@@ -111,40 +105,44 @@ section {
   min-height: 20rem;
   /*This represent the drawn strokes*/ }
 
-/*SVG ELEMENTS NEXT*/
 article {
   position: relative;
-  max-width: auto;
-  min-height: 25rem;
-  max-height: auto;
+  min-width: 100%;
   background-color: rgba(255, 0, 0, 0.08);
   overflow: hidden;
   box-shadow: inset 0rem 0rem 0.6rem 0.07rem rgba(0, 0, 0, 0.5);
-  padding: 0.3rem 1.5% 0% 1.5%;
   float: right;
-  font-size: 1rem; }
-  article h1, article h2, article h3, article h4, article h5, article h6 {
-    padding-bottom: 0.5rem !important;
-    padding-top: 0rem;
-    margin-top: 0rem; }
-  article span {
-    font-weight: bold;
-    display: inline; }
-  article p, article ol {
-    margin: auto 0rem;
+  font-size: 1.3rem; }
+  article #divBlock {
+    max-width: 50rem;
+    min-width: 30rem;
+    margin: 0rem auto;
     text-align: left !important; }
-    article p input, article ol input {
-      font-size: 1.5rem;
-      max-width: 20rem; }
-  article span {
-    transition: text-shadow 400ms, color 300ms; }
-  article span:hover {
-    color: white;
-    text-shadow: -0.1rem 0rem black, 0rem 0.1rem black, 0.1rem 0rem black, 0rem -0.1em black; }
-
-h1, h2, h3, h4, h5, h6 {
-  padding: 0rem;
-  margin: 0rem; }
+    article #divBlock h1, article #divBlock h2, article #divBlock h3, article #divBlock h4, article #divBlock h5, article #divBlock h6 {
+      padding: 0rem;
+      margin: 1rem 0rem 0rem 0rem;
+      font-size: 2rem !important; }
+    article #divBlock p {
+      padding: 0rem;
+      margin: 0rem; }
+    article #divBlock ol, article #divBlock ul {
+      margin: 1rem 0rem;
+      padding: 1rem 0rem;
+      width: 88%;
+      margin: 0rem auto; }
+      article #divBlock ol input, article #divBlock ul input {
+        font-size: 1.5rem;
+        max-width: 20rem; }
+    article #divBlock span {
+      margin: 1rem 0rem;
+      padding: 1rem 0rem;
+      font-weight: bold;
+      display: inline;
+      font-size: 2rem !important;
+      transition: text-shadow 400ms, color 300ms; }
+    article #divBlock span:hover {
+      color: white;
+      text-shadow: -0.1rem 0rem black, 0rem 0.1rem black, 0.1rem 0rem black, 0rem -0.1em black; }
 
 a:link, a:visited {
   text-decoration: none;

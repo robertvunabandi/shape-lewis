@@ -6,54 +6,50 @@ $minW: 30rem;
 	// font-variant: small-caps;
 	font-family: 'Alegreya Sans SC', sans-serif;
 }
-
 body {
 	position: relative; max-width: 1500px; margin: 0 auto;
 }
 
-#enterMolecule {
-	font-size: 2rem; 
-	text-align: center;
-	position: relative; max-width: $maxW;
-	overflow: hidden; 
-}
-
-#time {
-	text-align: center !important;
-	position: relative; max-width: 99%; font-weight: bolder; float: bottom; min-height: 1.2rem; 
-	display: block; 
-	transition: text-shadow 300ms, color 300ms;
-}
-#time:hover{
-	color: white;
-	text-shadow: -0.1rem 0rem rgba(0,0,0,1), 0rem 0.1rem rgba(0,0,0,1), 0.1rem 0rem rgba(0,0,0,1), 0rem -0.1em rgba(0,0,0,1),  0rem -0.3em rgba(0,0,0,1);
-}
+//HEADER
 
 header {
 	text-align: center;
 	position: relative;
 	margin: 0rem auto; padding: 0rem;
+	.title {
+		text-align: center;
+		transition: color 300ms, text-shadow 300ms; font-size: 7rem; padding: 0 0.2rem; 
+	}
+	.title:hover {
+		color: rgba(255,255,255,1);
+		text-shadow: -0.37rem 0 rgba(80,80,80,1), 0 0.37rem rgba(80,80,80,1), 0.37rem 0 rgba(80,80,80,1), 0 -0.37rem rgba(80,80,80,1), -0.67rem 0 rgba(255,0,0,0.2), 0 0.67rem rgba(255,0,0,0.2), 0.67rem 0 rgba(255,0,0,0.2), 0 -0.67rem rgba(255,0,0,0.2);
+		fill:white;
+	}
+	#time {
+		text-align: center !important;
+		position: relative; max-width: 99%; font-weight: bolder; float: bottom; min-height: 1.2rem; 
+		display: block; 
+		transition: text-shadow 300ms, color 300ms;
+	}
+	#time:hover{
+		color: white;
+		text-shadow: -0.1rem 0rem rgba(0,0,0,1), 0rem 0.1rem rgba(0,0,0,1), 0.1rem 0rem rgba(0,0,0,1), 0rem -0.1em rgba(0,0,0,1),  0rem -0.3em rgba(0,0,0,1);
+	}
 }
 
-// header, section, article, aside, footer {
-// 	position: relative;
-// }
-
-.title {
-	text-align: center;
-	transition: color 300ms, text-shadow 300ms; font-size: 7rem; padding: 0 0.2rem; 
-}
-
-.title:hover {
-	color: rgba(255,255,255,1);
-	text-shadow: -0.37rem 0 rgba(80,80,80,1), 0 0.37rem rgba(80,80,80,1), 0.37rem 0 rgba(80,80,80,1), 0 -0.37rem rgba(80,80,80,1), -0.67rem 0 rgba(255,0,0,0.2), 0 0.67rem rgba(255,0,0,0.2), 0.67rem 0 rgba(255,0,0,0.2), 0 -0.67rem rgba(255,0,0,0.2);
-	fill:white;
-}
+//SECTION
 
 section {
-	position: relative; max-width: 65%; min-width: 65%; 
+	position: relative; max-width: $maxW; //max-width: 65%; min-width: 65%; 
 	text-align: center; // float: center;
-	margin: 0 auto;
+	margin: 0rem auto;
+	#enterMolecule {
+		font-size: 2rem; 
+		text-align: center;
+		position: relative; max-width: $maxW;
+		overflow: hidden; 
+	}
+
 }
 
 #drawingSpace {
@@ -84,7 +80,7 @@ section {
 
 #smallDisplay, #bigDisplay {
 	position: relative; min-width: $minW; max-width: $maxW;
-	margin: 0.4rem auto;
+	margin: 0.3rem auto;
 	overflow: hidden;
 	box-shadow: inset 0rem 0rem 0.5rem 0.2rem rgba(0,0,0,0.1);
 	transition: border 150ms, margin 150ms, box-shadow 300ms;
@@ -119,46 +115,48 @@ section {
 	/*This represent the drawn strokes*/
 }
 
-/*SVG ELEMENTS NEXT*/
-
 //----------------------------------------------------------------------------------------
-//Starting article!
 
 article {
-	position: relative; max-width: auto; min-height: 25rem; max-height: auto;
+	position: relative; min-width: 100%; // min-height: auto; max-height: auto;
 	background-color: rgba(255,0,0,0.08); 
 	overflow: hidden;
 	box-shadow: inset 0rem 0rem 0.6rem 0.07rem rgba(0,0,0,0.5);
-	padding: 0.3rem 1.5% 0% 1.5%; float: right;
-	font-size: 1rem;
-	h1, h2, h3, h4, h5, h6 {
-		// font-size: 1.5rem;
-		padding-bottom: 0.5rem !important; padding-top: 0rem; margin-top: 0rem;
-	}
-	span {
-		font-weight: bold; display: inline;
-		// font-size: 1.5rem;
-	}
-	p, ol {
-		// font-size: 0.9rem;
-		margin: auto 0rem;
+	//padding: 1rem;
+	// //padding: 0.3rem 1.5% 0% 1.5%; 
+	float: right;
+	font-size: 1.3rem;
+	#divBlock {
+		max-width: $maxW;
+		min-width: $minW;
+		margin: 0rem auto;
 		text-align: left !important;
-		input {
-			font-size: 1.5rem;
-			max-width: 20rem;
+		h1, h2, h3, h4, h5, h6 {
+			padding: 0rem; margin: 1rem 0rem 0rem 0rem;
+			font-size: 2rem !important;
+		}
+		p{
+			padding: 0rem; margin: 0rem;
+		}
+		ol, ul {
+			margin: 1rem 0rem; padding: 1rem 0rem;
+			width: 88%; margin: 0rem auto;
+			input {
+				font-size: 1.5rem;
+				max-width: 20rem;
+			}
+		}
+		span {
+			margin: 1rem 0rem; padding: 1rem 0rem;
+			font-weight: bold; display: inline;
+			font-size: 2rem !important;
+			transition: text-shadow 400ms, color 300ms;
+		}
+		span:hover {
+			color: white;
+			text-shadow: -0.1rem 0rem rgba(0,0,0,1), 0rem 0.1rem rgba(0,0,0,1), 0.1rem 0rem rgba(0,0,0,1), 0rem -0.1em rgba(0,0,0,1);
 		}
 	}
-	span {
-		transition: text-shadow 400ms, color 300ms;
-	}
-	span:hover {
-		color: white;
-		text-shadow: -0.1rem 0rem rgba(0,0,0,1), 0rem 0.1rem rgba(0,0,0,1), 0.1rem 0rem rgba(0,0,0,1), 0rem -0.1em rgba(0,0,0,1);
-	}
-}
-
-h1, h2, h3, h4, h5, h6 {
-	padding: 0rem; margin: 0rem;
 }
 
 // LINKS!
