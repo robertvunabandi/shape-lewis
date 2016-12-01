@@ -3,8 +3,9 @@ $minW: 30rem;
 
 * {
 	// font-family: menlo;
+	font-family: 'Lato', sans-serif, helvetica, small-caps;
+	// font-family: 
 	// font-variant: small-caps;
-	font-family: 'Alegreya Sans SC', sans-serif;
 }
 body {
 	position: relative; max-width: 1500px; margin: 0 auto;
@@ -25,19 +26,9 @@ header {
 		text-shadow: -0.37rem 0 rgba(80,80,80,1), 0 0.37rem rgba(80,80,80,1), 0.37rem 0 rgba(80,80,80,1), 0 -0.37rem rgba(80,80,80,1), -0.67rem 0 rgba(255,0,0,0.2), 0 0.67rem rgba(255,0,0,0.2), 0.67rem 0 rgba(255,0,0,0.2), 0 -0.67rem rgba(255,0,0,0.2);
 		fill:white;
 	}
-	#time {
-		position: relative; margin: 0rem auto; padding: 0rem; max-width: 7rem;
-		font-weight: bolder; float: bottom; min-height: 1.2rem; 
-		display: block;
-		transition: text-shadow 300ms, color 300ms;
-	}
-	#time:hover{
-		color: white;
-		text-shadow: -0.1rem 0rem rgba(0,0,0,1), 0rem 0.1rem rgba(0,0,0,1), 0.1rem 0rem rgba(0,0,0,1), 0rem -0.1em rgba(0,0,0,1),  0rem -0.3em rgba(0,0,0,1);
-	}
 }
 
-@media (max-width: 600px){
+@media only screen and (max-width: 600px){
 	header {
 		.title {
 			font-size: 9rem; 
@@ -48,7 +39,7 @@ header {
 		}
 	}
 }
-@media (min-width: 601px) and (max-width: 1000px){
+@media only screen and (min-width: 601px) and (max-width: 1000px){
 	header {
 		.title {
 			font-size: 8rem; 
@@ -59,7 +50,7 @@ header {
 		}
 	}
 }
-@media (min-width: 1001px){
+@media only screen and (min-width: 1001px){
 	header {
 		.title {
 			font-size: 8rem; 
@@ -72,12 +63,27 @@ header {
 
 //SECTION
 
+@media only screen and (max-width: 600px){
+	#enterMolecule {
+		font-size: 4rem; 
+	}
+}
+@media only screen and (min-width: 601px) and (max-width: 1000px){
+	#enterMolecule {
+		font-size: 3rem; 
+	}
+}
+@media only screen and (min-width: 1001px){
+	#enterMolecule {
+		font-size: 2.3rem; 
+	}
+}
+
 section {
 	position: relative; max-width: $maxW; //max-width: 65%; min-width: 65%; 
 	text-align: center; // float: center;
 	margin: 0rem auto;
 	#enterMolecule {
-		font-size: 2rem; 
 		text-align: center;
 		position: relative; max-width: $maxW;
 		overflow: hidden; 
@@ -121,14 +127,14 @@ section {
 }
 
 #smallDisplay {
-	font-size: 1.3rem;
-	min-height: 1.9rem; max-height: 1.9rem; 
+	font-size: 2.3rem;
+	min-height: 3.2rem; max-height: 3.2rem; 
 	padding-top: 0.4rem; overflow-y: auto; overflow-x: auto;
 }
 
 #bigDisplay {
 	min-height: 1rem; // max-height: 9rem;
-	font-size: 1.2rem;
+	font-size: 2rem;
 	span {
 		position: relative; top: 1rem;
 	}
@@ -150,15 +156,72 @@ section {
 
 //----------------------------------------------------------------------------------------
 
+@media only screen and (max-width: 600px) {
+	article {
+		font-size: 3rem;
+		#divBlock {
+			h1, h2, h3, h4, h5, h6 {
+				font-size: 4rem !important;
+			}
+			ol, ul {
+				input {
+					font-size: 1.5rem;
+					max-width: 20rem;
+				}
+			}
+			span {
+				font-size: 4rem !important;
+			}
+		}
+	}
+}
+@media only screen and (min-width: 601px) and (max-width: 1000px) {
+	article {
+		font-size: 2rem;
+		#divBlock {
+			h1, h2, h3, h4, h5, h6 {
+				font-size: 3.5rem !important;
+			}
+			ol, ul {
+				input {
+					font-size: 1.5rem;
+					max-width: 20rem;
+				}
+			}
+			span {
+				font-size: 3.5rem !important;
+			}
+		}
+	}
+}
+@media only screen and (min-width: 1001px) {
+	article {
+		font-size: 1.7rem;
+		#divBlock {
+			h1, h2, h3, h4, h5, h6 {
+				font-size: 3rem !important;
+			}
+			ol, ul {
+				input {
+					font-size: 1.5rem;
+					max-width: 20rem;
+				}
+			}
+			span {
+				font-size: 3rem !important;
+			}
+		}
+	}
+}
+
+
 article {
 	position: relative; min-width: 100%; // min-height: auto; max-height: auto;
 	background-color: rgba(255,0,0,0.08); 
 	overflow: hidden;
 	box-shadow: inset 0rem 0rem 0.6rem 0.07rem rgba(0,0,0,0.5);
-	//padding: 1rem;
-	// //padding: 0.3rem 1.5% 0% 1.5%; 
 	float: right;
-	font-size: 1.3rem;
+	font-size: 1.7rem;
 	#divBlock {
 		max-width: $maxW;
 		min-width: $minW;
@@ -166,7 +229,6 @@ article {
 		text-align: left !important;
 		h1, h2, h3, h4, h5, h6 {
 			padding: 0rem; margin: 1rem 0rem 0rem 0rem;
-			font-size: 2rem !important;
 		}
 		p{
 			padding: 0rem; margin: 0rem;
@@ -174,15 +236,10 @@ article {
 		ol, ul {
 			margin: 1rem 0rem; padding: 1rem 0rem;
 			width: 88%; margin: 0rem auto;
-			input {
-				font-size: 1.5rem;
-				max-width: 20rem;
-			}
 		}
 		span {
 			margin: 1rem 0rem; padding: 1rem 0rem;
 			font-weight: bold; display: inline;
-			font-size: 2rem !important;
 			transition: text-shadow 400ms, color 300ms;
 		}
 		span:hover {
@@ -217,6 +274,19 @@ a:visited {
 	@extend a:link;
 }
 
+//time!
 
+#time {
+	position: absolute; top: 21rem;
+	margin: 0rem auto; padding: 1rem; max-width: 30rem; min-height: 1.2rem; 
+	font-weight: bolder; float: center; 
+	display: block;
+	font-size: 2.5rem; color: rgba(0,0,0,0.02);
+	transition: text-shadow 300ms, color 300ms;
+}
+#time:hover{
+	color: white;
+	text-shadow: -0.1rem 0rem rgba(0,0,0,1), 0rem 0.1rem rgba(0,0,0,1), 0.1rem 0rem rgba(0,0,0,1), 0rem -0.1em rgba(0,0,0,1),  0rem -0.3em rgba(0,0,0,1);
+}
 
 
