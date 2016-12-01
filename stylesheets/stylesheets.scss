@@ -90,7 +90,7 @@ section {
 #smallDisplay {
 	font-size: 1.3rem;
 	min-height: 1.9rem; max-height: 1.9rem; 
-	padding-top: 0.4rem;
+	padding-top: 0.4rem; overflow-y: auto; overflow-x: auto;
 }
 
 #bigDisplay {
