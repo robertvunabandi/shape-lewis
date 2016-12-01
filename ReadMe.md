@@ -28,6 +28,12 @@ The main drawback from this method is that every molecules are saved on file. Th
 
 I have not found any algorithm that can draw Lewis Shapes perfectly without getting data from a database. I plan to have a function that draw shapes in a much faster way and more accurate.
 
+I can find molecules from multiple places:
+[Reciprocal Net](http://www.reciprocalnet.org/edumodules/commonmolecules/list.html)  
+[Wikipedia](https://en.wikipedia.org/wiki/List_of_interstellar_and_circumstellar_molecules)  
+[Grindell](http://web.grinnell.edu/courses/chm/visualization/)  
+[Periodni.com](http://www.periodni.com/solcalc-chemical_compounds.html)  
+
 ##Molecules on file: (in alphabetical and increasing number order)
 
 CH4  

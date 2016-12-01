@@ -1,5 +1,5 @@
 
-//The function above is just to keep track of the time.
+
 /*
 function generateRightViewbox(){
 	Test window, 
@@ -32,14 +32,67 @@ function turnSentenceIntoHtmlElements(text, typeOfElements, name){
 //--------------------------------------------------------------------------------------------------
 //Below here are all the specific functions working in the background.
 //These need to be implemented for different browsers and different screen sizes.
-//But I want to make use of frameworks as little as possible, so this might be a bit complicated.
 
 function dot(location){
 	var newLoc = recognizeLineDirection(location);
 	var x = newLoc[0], y = newLoc[1];
 	var append = "<circle cx='"+x+"' cy='"+y+"' r='2' stroke='black' stroke-width='1' fill='black' />";
 	document.getElementById("drawn").innerHTML += append;
+} //I will mostly use two dots and four dots, so this is for the most part not used.
+function twoVDots(locationArray) {
+	var x = locationArray[0], y1 = locationArray[1], y2 = y1 + 8;
+	var append = "<circle cx='"+x+"' cy='"+y1+"' r='2' stroke='black' stroke-width='1' fill='black' />";
+	append += "<circle cx='"+x+"' cy='"+y2+"' r='2' stroke='black' stroke-width='1' fill='black' />";
+	document.getElementById("drawn").innerHTML += append;
 }
+function twoHDots(locationArray) {
+	var x1 = locationArray[0], x2 = x1 + 8, y = locationArray[1];
+	var append = "<circle cx='"+x1+"' cy='"+y+"' r='2' stroke='black' stroke-width='1' fill='black' />";
+	append += "<circle cx='"+x2+"' cy='"+y+"' r='2' stroke='black' stroke-width='1' fill='black' />";
+	document.getElementById("drawn").innerHTML += append;
+}
+function fourHDots(locationArray){
+	twoHDots(locationArray);
+	var v1 = locationArray[0];
+	var v2 = locationArray[1]+25;
+	var newLocation = [v1, v2];
+	twoHDots(newLocation);
+} //Here, the locationArray refers to the top left dot. HDots goes two H on top, two H on bottom.
+function fourVDots(locationArray){
+	twoVDots(locationArray);
+	var v1 = locationArray[0]+25;
+	var v2 = locationArray[1];
+	var newLocation = [v1, v2];
+	twoVDots(newLocation);
+} //Here, the locationArray refers to the top left dot. VDots goes two V on top, two V on bottom.
+function SixDots(locationArray, direction, side){
+	switch (direction){
+		case "H":
+			fourHDots(direction);
+			switch (side){
+				case "R":
+				break;
+				case "L":
+				break;
+				default:
+				break;
+			}
+		break;
+		case "V":
+			fourVDots(direction);
+			switch (side){
+				case "U":
+				break;
+				case "D":
+				break;
+				default:
+				break;
+			}
+		break;
+		default:
+		break;
+	}
+}//Here, the location Array refers to the one it'd be on any of the four*Dots fxns.
 
 function element(element, location){ //This location works in REMS!!!
 	var newLoc = recognizeLineDirection(location);
@@ -53,15 +106,43 @@ function line(direction){
 	var x1 = newDir[0], y1 = newDir[1], x2 = newDir[2], y2 = newDir[3];
 	var append = "<line x1='"+x1+"' y1='"+y1+"' x2='"+x2+"' y2='"+y2+"' stroke-width='0.5' stroke='black'/>";
 	document.getElementById("drawn").innerHTML += append;
-}
-
+} // I might not use this function anymore, so I might get rid of it.
 function lineDash(direction){
 	var newDir = recognizeLineDirection(direction);
 	var x1 = newDir[0], y1 = newDir[1], x2 = newDir[2], y2 = newDir[3];
 	var append = "<line stroke-dasharray='3, 3' x1='"+x1+"' y1='"+y1+"' x2='"+x2+"' y2='"+y2+"' stroke-width='0.5' stroke='black'/>";
 	document.getElementById("drawn").innerHTML += append;
+} // I might not use this function anymore, so I might get rid of it.
+function nVLines(originalDirection, n){
+	var newDir = recognizeLineDirection(originalDirection);
+	var x = parseInt(newDir[0]);
+	var y = [parseInt(newDir[1])];
+	var final = 2*n-2;
+	for (var i = 0; i <= final; i++){
+		if (i % 2 == 0){y.push(y[i]+30);}
+		else {y.push(y[i]+35);}
+	}
+	var append = "";
+	for (var j = 0; j <= final; j += 2){
+		append += "<line x1='"+x+"' y1='"+y[j]+"' x2='"+x+"' y2='"+y[j+1]+"' stroke-width='0.5' stroke='black'/>";
+	}
+	document.getElementById("drawn").innerHTML += append;
 }
-
+function nHLines(originalDirection, n){
+	var newDir = recognizeLineDirection(originalDirection);
+	var y = parseInt(newDir[1]);
+	var x = [parseInt(newDir[0])];
+	var final = 2*n-2;
+	for (var i = 0; i <= final; i++){
+		if (i % 2 == 0){x.push(x[i]+30);}
+		else {x.push(x[i]+35);}
+	}
+	var append = "";
+	for (var j = 0; j <= final; j += 2){
+		append += "<line x1='"+x[j]+"' y1='"+y+"' x2='"+x[j+1]+"' y2='"+y+"' stroke-width='0.5' stroke='black'/>";
+	}
+	document.getElementById("drawn").innerHTML += append;
+}
 function recognizeLineDirection(direction){
 	var array = [];
 	array = direction.split(")");

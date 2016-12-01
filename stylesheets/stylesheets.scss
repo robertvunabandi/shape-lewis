@@ -2,13 +2,18 @@ $maxW: 50rem;
 $minW: 30rem;
 
 * {
-	// font-family: menlo;
 	font-family: 'Lato', sans-serif, helvetica, small-caps;
-	// font-family: 
 	// font-variant: small-caps;
 }
 body {
 	position: relative; max-width: 1500px; margin: 0 auto;
+}
+
+@media all and (max-width: 500px) and (min-width: 0px) {
+	input[type="text"] {
+		display:block;
+		width: auto;
+	}
 }
 
 //HEADER
@@ -59,17 +64,20 @@ header {
 
 @media only screen and (max-width: 600px){
 	#enterMolecule {
-		font-size: 3.5rem; 
+		font-size: 3.0rem;
+		min-width: 3rem;
 	}
 }
 @media only screen and (min-width: 601px) and (max-width: 1000px){
 	#enterMolecule {
-		font-size: 3.5rem; 
+		font-size: 3.0rem;
+		min-width: 3rem;
 	}
 }
 @media only screen and (min-width: 1001px){
 	#enterMolecule {
-		font-size: 2.3rem; 
+		font-size: 2.3rem;
+		min-width: 3rem;
 	}
 }
 
@@ -143,9 +151,9 @@ section {
 }
 
 #drawn {
-	max-width: 50rem; max-height: 20rem;
-	min-width: 50rem; min-height: 20rem;
-	/*This represent the drawn strokes*/
+	width: auto;
+	min-width: $maxW; max-width: $maxW; min-height: 20rem; max-height: 20rem; //supposedToBe 20rem
+	/*This represent the drawn strokes, THIS ALSO GIVES THE SIZE FOR SVG, CAREFULL*/
 }
 
 //----------------------------------------------------------------------------------------
@@ -213,12 +221,13 @@ article {
 	position: relative; min-width: 100%; // min-height: auto; max-height: auto;
 	background-color: rgba(255,0,0,0.08); 
 	overflow: hidden;
-	box-shadow: inset 0rem 0rem 0.6rem 0.07rem rgba(0,0,0,0.5);
+	box-shadow: inset 0rem 0rem 0.6rem 0.07rem rgba(50,0,0,0.7);
 	float: right;
 	font-size: 1.7rem;
 	#divBlock {
 		max-width: $maxW;
 		min-width: $minW;
+		width: 95%;
 		margin: 0rem auto;
 		text-align: left !important;
 		h1, h2, h3, h4, h5, h6 {
