@@ -59,12 +59,12 @@ header {
 
 @media only screen and (max-width: 600px){
 	#enterMolecule {
-		font-size: 6rem; 
+		font-size: 3.5rem; 
 	}
 }
 @media only screen and (min-width: 601px) and (max-width: 1000px){
 	#enterMolecule {
-		font-size: 4rem; 
+		font-size: 3.5rem; 
 	}
 }
 @media only screen and (min-width: 1001px){
@@ -155,7 +155,7 @@ section {
 		font-size: 5rem;
 		#divBlock {
 			h1, h2, h3, h4, h5, h6 {
-				font-size: 7rem !important;
+				font-size: 6.5rem !important;
 			}
 			ol, ul {
 				input {
@@ -164,14 +164,14 @@ section {
 				}
 			}
 			span {
-				font-size: 7rem !important;
+				font-size: 6.5rem !important;
 			}
 		}
 	}
 }
 @media only screen and (min-width: 601px) and (max-width: 1000px) {
 	article {
-		font-size: 4rem;
+		font-size: 5rem;
 		#divBlock {
 			h1, h2, h3, h4, h5, h6 {
 				font-size: 6.5rem !important;
@@ -267,34 +267,3 @@ a:active {
 a:visited {
 	@extend a:link;
 }
-
-//time!
-
-@media only screen and (max-width: 600px){
-	#time {
-		display: none;
-	}
-}
-@media only screen and (min-width: 601px) and (max-width: 1000px){
-	#time {
-		display: none;
-	}
-}
-@media only screen and (min-width: 1001px){
-	
-}
-
-#time {
-	position: absolute; top: 21rem;
-	margin: 0rem auto; padding: 1rem; max-width: 30rem; min-height: 1.2rem; 
-	font-weight: bolder; float: center; 
-	display: block;
-	font-size: 2.5rem; color: rgba(0,0,0,0.02);
-	transition: text-shadow 300ms, color 300ms;
-}
-#time:hover{
-	color: white;
-	text-shadow: -0.1rem 0rem rgba(0,0,0,1), 0rem 0.1rem rgba(0,0,0,1), 0.1rem 0rem rgba(0,0,0,1), 0rem -0.1em rgba(0,0,0,1),  0rem -0.3em rgba(0,0,0,1);
-}
-
-

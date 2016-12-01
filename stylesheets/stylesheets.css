@@ -35,10 +35,10 @@ header {
     padding: 0rem 0.5rem; } }
 @media only screen and (max-width: 600px) {
   #enterMolecule {
-    font-size: 6rem; } }
+    font-size: 3.5rem; } }
 @media only screen and (min-width: 601px) and (max-width: 1000px) {
   #enterMolecule {
-    font-size: 4rem; } }
+    font-size: 3.5rem; } }
 @media only screen and (min-width: 1001px) {
   #enterMolecule {
     font-size: 2.3rem; } }
@@ -119,15 +119,15 @@ section {
   article {
     font-size: 5rem; }
     article #divBlock h1, article #divBlock h2, article #divBlock h3, article #divBlock h4, article #divBlock h5, article #divBlock h6 {
-      font-size: 7rem !important; }
+      font-size: 6.5rem !important; }
     article #divBlock ol input, article #divBlock ul input {
       font-size: 1.5rem;
       max-width: 20rem; }
     article #divBlock span {
-      font-size: 7rem !important; } }
+      font-size: 6.5rem !important; } }
 @media only screen and (min-width: 601px) and (max-width: 1000px) {
   article {
-    font-size: 4rem; }
+    font-size: 5rem; }
     article #divBlock h1, article #divBlock h2, article #divBlock h3, article #divBlock h4, article #divBlock h5, article #divBlock h6 {
       font-size: 6.5rem !important; }
     article #divBlock ol input, article #divBlock ul input {
@@ -194,29 +194,5 @@ a:hover {
 a:active {
   text-shadow: 0.1rem 0.1rem black, -0.1rem -0.1rem black;
   color: white; }
-
-@media only screen and (max-width: 600px) {
-  #time {
-    display: none; } }
-@media only screen and (min-width: 601px) and (max-width: 1000px) {
-  #time {
-    display: none; } }
-#time {
-  position: absolute;
-  top: 21rem;
-  margin: 0rem auto;
-  padding: 1rem;
-  max-width: 30rem;
-  min-height: 1.2rem;
-  font-weight: bolder;
-  float: center;
-  display: block;
-  font-size: 2.5rem;
-  color: rgba(0, 0, 0, 0.02);
-  transition: text-shadow 300ms, color 300ms; }
-
-#time:hover {
-  color: white;
-  text-shadow: -0.1rem 0rem black, 0rem 0.1rem black, 0.1rem 0rem black, 0rem -0.1em black, 0rem -0.3em black; }
 
 /*# sourceMappingURL=stylesheets.css.map */
