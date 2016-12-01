@@ -14,16 +14,17 @@ header {
   header .title {
     text-align: center;
     transition: color 300ms, text-shadow 300ms;
-    font-size: 7rem;
-    padding: 0 0.2rem; }
+    margin: 0rem;
+    max-height: 0.3rem; }
   header .title:hover {
     color: white;
     text-shadow: -0.37rem 0 #505050, 0 0.37rem #505050, 0.37rem 0 #505050, 0 -0.37rem #505050, -0.67rem 0 rgba(255, 0, 0, 0.2), 0 0.67rem rgba(255, 0, 0, 0.2), 0.67rem 0 rgba(255, 0, 0, 0.2), 0 -0.67rem rgba(255, 0, 0, 0.2);
     fill: white; }
   header #time {
-    text-align: center !important;
     position: relative;
-    max-width: 99%;
+    margin: 0rem auto;
+    padding: 0rem;
+    max-width: 7rem;
     font-weight: bolder;
     float: bottom;
     min-height: 1.2rem;
@@ -33,6 +34,22 @@ header {
     color: white;
     text-shadow: -0.1rem 0rem black, 0rem 0.1rem black, 0.1rem 0rem black, 0rem -0.1em black, 0rem -0.3em black; }
 
+@media (max-width: 600px) {
+  header .title {
+    font-size: 9rem;
+    padding: 0rem 0rem; }
+  header #time {
+    font-size: 3rem; } }
+@media (min-width: 601px) and (max-width: 1000px) {
+  header .title {
+    font-size: 8rem;
+    padding: 0rem 0.4rem; }
+  header #time {
+    font-size: 3rem; } }
+@media (min-width: 1001px) {
+  header .title {
+    font-size: 8rem;
+    padding: 0rem 0.5rem; } }
 section {
   position: relative;
   max-width: 50rem;
