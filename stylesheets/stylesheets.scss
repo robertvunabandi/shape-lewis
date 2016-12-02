@@ -159,19 +159,19 @@ section {
 
 //----------------------------------------------------------------------------------------
 
-@media only screen and (max-width: 600px) and (max-height: 1200px) {
+@media only screen and (max-width: 600px) {
 	article {
-		font-size: 5rem;
+		font-size: 3rem;
 	}
 }
-@media only screen and (min-width: 601px) and (max-width: 1000px) and (min-height: 1201px) and (max-height: 2000px) {
+@media only screen and (min-width: 601px) and (max-width: 1000px) {
 	article {
-		font-size: 4rem;
+		font-size: 2.5rem !important;
 	}
 }
 @media only screen and (min-width: 1001px) {
 	article {
-		font-size: 1.7rem;
+		font-size: 2rem;
 	}
 }
 
@@ -181,11 +181,11 @@ article {
 	background-color: rgba(255,0,0,0.08); 
 	overflow: hidden;
 	box-shadow: inset 0rem 0rem 0.6rem 0.07rem rgba(50,0,0,0.7);
-	font-size: 1.7rem;
+	// font-size: 2rem;
 	#divBlock {
 		max-width: $maxW;
 		min-width: $minW;
-		width: 95%;
+		width: 85%;
 		margin: 0rem auto;
 		text-align: left !important;
 		h1, h2, h3, h4, h5, h6 {
