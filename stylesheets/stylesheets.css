@@ -61,7 +61,7 @@ section {
     overflow: hidden; }
 
 #drawingSpace {
-  font-family: Times !important;
+  font-family: menlo !important;
   position: relative;
   min-height: 20rem;
   max-height: 20rem;
@@ -80,6 +80,7 @@ section {
   #drawingSpace svg line:hover {
     stroke-width: 3; }
   #drawingSpace span {
+    font-family: menlo !important;
     transition: font-weight 300ms; }
   #drawingSpace span:hover {
     font-weight: bolder; }
@@ -123,43 +124,21 @@ section {
   max-height: 20rem;
   /*This represent the drawn strokes, THIS ALSO GIVES THE SIZE FOR SVG, CAREFULL*/ }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 600px) and (max-height: 1200px) {
   article {
-    font-size: 5rem; }
-    article #divBlock h1, article #divBlock h2, article #divBlock h3, article #divBlock h4, article #divBlock h5, article #divBlock h6 {
-      font-size: 6.5rem !important; }
-    article #divBlock ol input, article #divBlock ul input {
-      font-size: 1.5rem;
-      max-width: 20rem; }
-    article #divBlock span {
-      font-size: 6.5rem !important; } }
-@media only screen and (min-width: 601px) and (max-width: 1000px) {
+    font-size: 5rem; } }
+@media only screen and (min-width: 601px) and (max-width: 1000px) and (min-height: 1201px) and (max-height: 2000px) {
   article {
-    font-size: 5rem; }
-    article #divBlock h1, article #divBlock h2, article #divBlock h3, article #divBlock h4, article #divBlock h5, article #divBlock h6 {
-      font-size: 6.5rem !important; }
-    article #divBlock ol input, article #divBlock ul input {
-      font-size: 1.5rem;
-      max-width: 20rem; }
-    article #divBlock span {
-      font-size: 6.5rem !important; } }
+    font-size: 4rem; } }
 @media only screen and (min-width: 1001px) {
   article {
-    font-size: 1.7rem; }
-    article #divBlock h1, article #divBlock h2, article #divBlock h3, article #divBlock h4, article #divBlock h5, article #divBlock h6 {
-      font-size: 3rem !important; }
-    article #divBlock ol input, article #divBlock ul input {
-      font-size: 1.5rem;
-      max-width: 20rem; }
-    article #divBlock span {
-      font-size: 3rem !important; } }
+    font-size: 1.7rem; } }
 article {
   position: relative;
-  min-width: 100%;
+  min-width: 30rem;
   background-color: rgba(255, 0, 0, 0.08);
   overflow: hidden;
   box-shadow: inset 0rem 0rem 0.6rem 0.07rem rgba(50, 0, 0, 0.7);
-  float: right;
   font-size: 1.7rem; }
   article #divBlock {
     max-width: 50rem;
@@ -168,6 +147,7 @@ article {
     margin: 0rem auto;
     text-align: left !important; }
     article #divBlock h1, article #divBlock h2, article #divBlock h3, article #divBlock h4, article #divBlock h5, article #divBlock h6 {
+      font-size: 3rem !important;
       padding: 0rem;
       margin: 1rem 0rem 0rem 0rem; }
     article #divBlock p {
@@ -178,7 +158,11 @@ article {
       padding: 1rem 0rem;
       width: 88%;
       margin: 0rem auto; }
+      article #divBlock ol input, article #divBlock ul input {
+        font-size: 1.5rem;
+        max-width: 20rem; }
     article #divBlock span {
+      font-size: 5rem !important;
       margin: 1rem 0rem;
       padding: 1rem 0rem;
       font-weight: bold;

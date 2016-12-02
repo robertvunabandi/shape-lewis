@@ -94,7 +94,7 @@ section {
 }
 
 #drawingSpace {
-	font-family: Times !important;
+	font-family: menlo !important;
 	position: relative; min-height: 20rem; max-height: 20rem; min-width: $minW; max-width: $maxW; 
 	overflow: scroll; margin: 0 auto;
 	border: 0.1rem solid rgba(0,0,0,0.1); //border-radius: 15rem;
@@ -112,6 +112,7 @@ section {
 		}
 	}
 	span {
+		font-family: menlo !important;
 		transition: font-weight 300ms;
 	}
 	span:hover {
@@ -158,71 +159,28 @@ section {
 
 //----------------------------------------------------------------------------------------
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 600px) and (max-height: 1200px) {
 	article {
 		font-size: 5rem;
-		#divBlock {
-			h1, h2, h3, h4, h5, h6 {
-				font-size: 6.5rem !important;
-			}
-			ol, ul {
-				input {
-					font-size: 1.5rem;
-					max-width: 20rem;
-				}
-			}
-			span {
-				font-size: 6.5rem !important;
-			}
-		}
 	}
 }
-@media only screen and (min-width: 601px) and (max-width: 1000px) {
+@media only screen and (min-width: 601px) and (max-width: 1000px) and (min-height: 1201px) and (max-height: 2000px) {
 	article {
-		font-size: 5rem;
-		#divBlock {
-			h1, h2, h3, h4, h5, h6 {
-				font-size: 6.5rem !important;
-			}
-			ol, ul {
-				input {
-					font-size: 1.5rem;
-					max-width: 20rem;
-				}
-			}
-			span {
-				font-size: 6.5rem !important;
-			}
-		}
+		font-size: 4rem;
 	}
 }
 @media only screen and (min-width: 1001px) {
 	article {
 		font-size: 1.7rem;
-		#divBlock {
-			h1, h2, h3, h4, h5, h6 {
-				font-size: 3rem !important;
-			}
-			ol, ul {
-				input {
-					font-size: 1.5rem;
-					max-width: 20rem;
-				}
-			}
-			span {
-				font-size: 3rem !important;
-			}
-		}
 	}
 }
 
 
 article {
-	position: relative; min-width: 100%; // min-height: auto; max-height: auto;
+	position: relative; min-width: $minW; // min-height: auto; max-height: auto; // min-width: 100%;
 	background-color: rgba(255,0,0,0.08); 
 	overflow: hidden;
 	box-shadow: inset 0rem 0rem 0.6rem 0.07rem rgba(50,0,0,0.7);
-	float: right;
 	font-size: 1.7rem;
 	#divBlock {
 		max-width: $maxW;
@@ -231,6 +189,7 @@ article {
 		margin: 0rem auto;
 		text-align: left !important;
 		h1, h2, h3, h4, h5, h6 {
+			font-size: 3rem !important;
 			padding: 0rem; margin: 1rem 0rem 0rem 0rem;
 		}
 		p{
@@ -239,8 +198,13 @@ article {
 		ol, ul {
 			margin: 1rem 0rem; padding: 1rem 0rem;
 			width: 88%; margin: 0rem auto;
+			input {
+				font-size: 1.5rem;
+				max-width: 20rem;
+			}
 		}
 		span {
+			font-size: 5rem !important;
 			margin: 1rem 0rem; padding: 1rem 0rem;
 			font-weight: bold; display: inline;
 			transition: text-shadow 400ms, color 300ms;

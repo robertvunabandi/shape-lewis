@@ -36,7 +36,7 @@ function turnSentenceIntoHtmlElements(text, typeOfElements, name){
 function dot(location){
 	var newLoc = recognizeLineDirection(location);
 	var x = newLoc[0], y = newLoc[1];
-	var append = "<circle cx='"+x+"' cy='"+y+"' r='2' stroke='black' stroke-width='1' fill='black' />";
+	var append = "<circle cx='"+x+"' cy='"+y+"' r='1.25' stroke='black' stroke-width='1' fill='black' />";
 	document.getElementById("drawn").innerHTML += append;
 } //I will mostly use two dots and four dots, so this is for the most part not used.
 function twoVDots(locationArray) {
@@ -97,7 +97,7 @@ function SixDots(locationArray, direction, side){
 function element(element, location){ //This location works in REMS!!!
 	var newLoc = recognizeLineDirection(location);
 	var x = newLoc[0], y = newLoc[1];
-	var append = "<span style='position: absolute; font-family: helvetica !important; font-size: 2rem; left:"+x+"rem; top: "+y+"rem;'>"+element+"</span>";
+	var append = "<span style='position: absolute; font-size: 2rem; left:"+x+"rem; top: "+y+"rem;'>"+element+"</span>";
 	document.getElementById("drawingSpace").innerHTML += append;
 }
 
