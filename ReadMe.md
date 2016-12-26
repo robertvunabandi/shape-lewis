@@ -4,6 +4,8 @@ I started this project in order to help people visualize the Lewis shapes of mol
 
 It is frustrating to go on many websites and try to find the Lewis shape for a specific molecule, so I hope this will take off as a main source for finding the Lewis Shapes.
 
+Also, I tried to use the least number of libraries and data in order to decrease the file size. Ideally, someone who has slow internet should be able to load this page easily, and that is why I preferred reducing the file size as much as possible.
+
 ##Background
 
 There are two possible ways to have something that visualizes the shapes of molecules: having an algorithm that can get, with accuracy, the shape of any molecule, or having a database that stored multiple molecules and calls one of them when a users requests it.

@@ -1,4 +1,5 @@
-$maxW: 50rem;
+// $maxW: 50rem;
+$maxW: 800px;
 $minW: 30rem;
 
 * {
@@ -20,15 +21,29 @@ body {
 header {
 	text-align: center;
 	position: relative;
-	margin: 0rem auto; padding: 0rem;
+	margin: 0rem auto 0rem auto;
+	padding: 0rem 0rem 0rem 0rem;
+	z-index: 1;
+	background-color: white;
+	//-----
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+52,ff0000+100&0+0,0.25+100 */
+	background: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.13) 62%, rgba(255,0,0,0.15) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,0.13) 62%,rgba(255,0,0,0.15) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,0.13) 62%,rgba(255,0,0,0.15) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#40ff0000',GradientType=0 ); /* IE6-9 */
+	//-----
+	#spacerOnTitle{
+		color: white; font-size: 5.5rem; display: inline-block;
+	}
 	.title {
 		text-align: center;
-		transition: color 300ms, text-shadow 300ms; 
-		margin: 0rem; max-height: 0.3rem;
+		text-transform: uppercase; font-weight: bold;
+		transition: color 300ms, text-shadow 300ms; display: inline-block;
+		margin: -1.5rem -0.5rem -5rem -0.5rem; padding: 0.7rem 0.7rem 0rem 0.7rem; height: 6.5rem; 
 		}
 	.title:hover {
 		color: rgba(255,255,255,1);
-		text-shadow: -0.37rem 0 rgba(80,80,80,1), 0 0.37rem rgba(80,80,80,1), 0.37rem 0 rgba(80,80,80,1), 0 -0.37rem rgba(80,80,80,1), -0.67rem 0 rgba(255,0,0,0.2), 0 0.67rem rgba(255,0,0,0.2), 0.67rem 0 rgba(255,0,0,0.2), 0 -0.67rem rgba(255,0,0,0.2);
+		text-shadow: -0.22rem 0 rgba(80,80,80,1), 0 0.22rem rgba(80,80,80,1), 0.22rem 0 rgba(80,80,80,1), 0 -0.22rem rgba(80,80,80,1), -0.47rem 0 rgba(255,0,0,0.2), 0 0.47rem rgba(255,0,0,0.2), 0.47rem 0 rgba(255,0,0,0.2), 0 -0.47rem rgba(255,0,0,0.2);
 		fill:white;
 	}
 }
@@ -36,33 +51,35 @@ header {
 @media only screen and (max-width: 600px){
 	header {
 		.title {
-			font-size: 9.5rem; 
-			padding: 0rem 0rem; 
+			font-size: 7rem; 
 		}
 	}
 }
 @media only screen and (min-width: 601px) and (max-width: 1000px){
 	header {
 		.title {
-			font-size: 8rem; 
-			padding: 0rem 0.5rem;
+			font-size: 7rem; 
 		}
 	}
 }
 @media only screen and (min-width: 1001px){
 	header {
 		.title {
-			font-size: 8rem; 
-			padding: 0rem 0.5rem;
+			font-size: 5.5rem; 
 		}
 	}
 }
 
-
+#lineSplit {
+	display: block;
+	min-height: 0.4rem; margin-bottom: 0.3rem;
+	background-color: rgba(0,0,0,1);
+	z-index: 10;
+}
 
 //SECTION
 
-@media only screen and (max-width: 600px){
+/*@media only screen and (max-width: 600px){
 	#enterMolecule {
 		font-size: 3.0rem;
 		min-width: 3rem;
@@ -79,20 +96,19 @@ header {
 		font-size: 2.3rem;
 		min-width: 3rem;
 	}
-}
-
+}*/
 section {
 	position: relative; max-width: $maxW; //max-width: 65%; min-width: 65%; 
 	text-align: center; // float: center;
 	margin: 0rem auto;
 	#enterMolecule {
+		font-size: 4.0rem;
+		min-width: 3rem;
 		text-align: center;
 		position: relative; max-width: $maxW;
-		overflow: hidden; 
+		overflow: hidden; margin-bottom: 0.3rem;
 	}
-
 }
-
 #drawingSpace {
 	font-family: menlo !important;
 	position: relative; min-height: 20rem; max-height: 20rem; min-width: $minW; max-width: $maxW; 
@@ -119,62 +135,68 @@ section {
 		font-weight: bolder;
 	}
 }
-
 #smallDisplay, #bigDisplay {
 	position: relative; min-width: $minW; max-width: $maxW;
 	margin: 0.3rem auto;
-	overflow: hidden;
 	box-shadow: inset 0rem 0rem 0.5rem 0.2rem rgba(0,0,0,0.1);
 	transition: border 150ms, margin 150ms, box-shadow 300ms;
 	display: block;
 }
-
 #smallDisplay {
 	font-size: 2.3rem;
-	min-height: 3.2rem; max-height: 3.2rem; 
-	padding-top: 0.4rem; overflow-y: auto; overflow-x: auto;
+	overflow: hidden;
 }
-
 #bigDisplay {
 	min-height: 1rem; // max-height: 9rem;
-	font-size: 2rem;
+	font-size: 1.5rem;
+	padding: 0.75rem 0.375rem;
+	overflow-y: auto; overflow-x: auto;
 	span {
 		position: relative; top: 1rem;
 	}
 }
-
 #drawingSpace:hover {
 	box-shadow: inset 0rem 0rem 4rem 0.5rem rgba(0,0,0,0.1);
 }
-
 #smallDisplay:hover, #bigDisplay:hover {
 	box-shadow: inset 0rem 0rem 1.5rem 0.5rem rgba(0,0,0,0.1);
 }
-
 #drawn {
-	width: auto;
-	min-width: $maxW; max-width: $maxW; min-height: 20rem; max-height: 20rem; //supposedToBe 20rem
+	// width: auto;
+	// max-width: $maxW; min-height: 20rem; max-height: 20rem; min-width: $minW; 
 	/*This represent the drawn strokes, THIS ALSO GIVES THE SIZE FOR SVG, CAREFULL*/
 }
-
 //----------------------------------------------------------------------------------------
-
 @media only screen and (max-width: 600px) {
 	article {
-		font-size: 3rem;
+		font-size: 4rem;
+		#divBlock {
+			span {
+				font-size: 5rem;
+			}
+		}
 	}
 }
 @media only screen and (min-width: 601px) and (max-width: 1000px) {
 	article {
-		font-size: 2.5rem !important;
+		font-size: 2rem;
+		#divBlock {
+			span {
+				font-size: 4rem;
+			}
+		}
 	}
 }
 @media only screen and (min-width: 1001px) {
 	article {
 		font-size: 2rem;
+		#divBlock {
+			span {
+				font-size: 4rem;
+			}
+		}
 	}
 }
-
 
 article {
 	position: relative; min-width: $minW; // min-height: auto; max-height: auto; // min-width: 100%;
@@ -189,8 +211,7 @@ article {
 		margin: 0rem auto;
 		text-align: left !important;
 		h1, h2, h3, h4, h5, h6 {
-			font-size: 3rem !important;
-			padding: 0rem; margin: 1rem 0rem 0rem 0rem;
+			padding: 0rem; margin: 0.5rem 0rem 0rem 0rem;
 		}
 		p{
 			padding: 0rem; margin: 0rem;
@@ -204,7 +225,7 @@ article {
 			}
 		}
 		span {
-			font-size: 5rem !important;
+			text-transform: uppercase;
 			margin: 1rem 0rem; padding: 1rem 0rem;
 			font-weight: bold; display: inline;
 			transition: text-shadow 400ms, color 300ms;
@@ -225,18 +246,28 @@ a:link {
 	text-shadow: 0.15rem 0.15rem rgba(255,0,0,0.05), -0.15rem -0.15rem rgba(255,0,0,0.05), -0.15rem 0.15rem rgba(255,0,0,0.05), 0.15rem -0.15rem rgba(255,0,0,0.05), 0.1rem 0.1rem rgba(255,255,255,1), -0.1rem -0.1rem rgba(255,255,255,1), -0.1rem 0.1rem rgba(255,255,255,1), 0.1rem -0.1rem rgba(255,255,255,1);
 	transition: text-shadow 200ms, color 200ms, font-weight 200ms;
 }
-
 a:hover {
 	text-shadow: 0.2rem 0.2rem rgba(0,0,0,0.2), -0.2rem -0.2rem rgba(0,0,0,0.08);
 	font-weight: bolder;
 	color: rgba(90,90,90,1);
 }
-
 a:active {
 	text-shadow: 0.1rem 0.1rem rgba(0,0,0,1), -0.1rem -0.1rem rgba(0,0,0,1);
 	color: white;
 }
-
 a:visited {
 	@extend a:link;
 }
+
+#instructions {
+	display: block; 
+	position: absolute; bottom: 0rem;  margin: 0px auto; 
+	min-height: 3rem; //background-color: rgba(0,0,0,0.1);
+	width: 100%;
+	border-radius: 200px; padding: 0.5rem; 
+	font-size: 2rem;
+	line-height: 3rem; text-align: center;
+	color: rgba(255,0,0,0.5);
+	z-index: 1000;
+}
+

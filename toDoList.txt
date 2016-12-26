@@ -1,0 +1,13 @@
+TO DO:
+- - - -
+Make shaded title kind of, look nicer.
+
+Increase spaces
+
+** Before next, learn JS objects and practice! **
+
+Make shapes appear in middle with function finding width and setInterval altering the width of viewbox. (http://stackoverflow.com/questions/294250/how-do-i-retrieve-an-html-elements-actual-width-and-height)
+
+Fix the Node.js (backend side).
+
+Recognize browser version (navigator.appName, and navigator.appVersion, i.e. navigator object). (http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser)
