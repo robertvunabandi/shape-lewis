@@ -4,7 +4,7 @@ window.addEventListener("load", giveWidth);
 window.addEventListener("load", giveHeight);
 window.addEventListener("load", setWidth);
 window.addEventListener("resize", giveWidth);
-window.addEventListener("load", setHeight);
+window.addEventListener("load", setHeight); //WOW
 
 function giveWidth(){
 	actualWidth = document.getElementById("drawingSpace").offsetWidth;
