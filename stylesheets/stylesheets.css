@@ -60,24 +60,6 @@ header {
   background-color: black;
   z-index: 10; }
 
-/*@media only screen and (max-width: 600px){
-	#enterMolecule {
-		font-size: 3.0rem;
-		min-width: 3rem;
-	}
-}
-@media only screen and (min-width: 601px) and (max-width: 1000px){
-	#enterMolecule {
-		font-size: 3.0rem;
-		min-width: 3rem;
-	}
-}
-@media only screen and (min-width: 1001px){
-	#enterMolecule {
-		font-size: 2.3rem;
-		min-width: 3rem;
-	}
-}*/
 section {
   position: relative;
   max-width: 800px;
@@ -93,7 +75,6 @@ section {
     margin-bottom: 0.3rem; }
 
 #drawingSpace {
-  font-family: menlo !important;
   position: relative;
   min-height: 20rem;
   max-height: 20rem;
@@ -112,7 +93,7 @@ section {
   #drawingSpace svg line:hover {
     stroke-width: 3; }
   #drawingSpace span {
-    font-family: menlo !important;
+    font-family: 'Anonymous Pro', monospace !important;
     transition: font-weight 300ms; }
   #drawingSpace span:hover {
     font-weight: bolder; }
@@ -170,6 +151,16 @@ article {
   background-color: rgba(255, 0, 0, 0.08);
   overflow: hidden;
   box-shadow: inset 0rem 0rem 0.6rem 0.07rem rgba(50, 0, 0, 0.7); }
+  article form {
+    display: inline-block;
+    min-width: 85%;
+    margin: 0rem;
+    padding: 0rem; }
+    article form input {
+      min-width: 100%;
+      display: block;
+      line-height: 3rem;
+      padding: 0 1rem; }
   article #divBlock {
     max-width: 800px;
     min-width: 30rem;

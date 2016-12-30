@@ -1,4 +1,4 @@
-#ReadMe.text
+#ReadMe.md
 
 I started this project in order to help people visualize the Lewis shapes of molecules. 
 
@@ -10,7 +10,7 @@ Also, I tried to use the least number of libraries and data in order to decrease
 
 There are two possible ways to have something that visualizes the shapes of molecules: having an algorithm that can get, with accuracy, the shape of any molecule, or having a database that stored multiple molecules and calls one of them when a users requests it.
 
-To create an algorithm that accounts for all the elements and shapes is a difficult tast. Here is an example that does so: 
+To create an algorithm that accounts for all the elements and shapes is a difficult task. Here is an example that does so: 
 
 [pubchem.ncbi.nlm](https://pubchem.ncbi.nlm.nih.gov/pug_rest/PUG_REST_Tutorial.html#_Toc458584410)
 
@@ -36,57 +36,23 @@ I can find molecules from multiple places:
 [Grindell](http://web.grinnell.edu/courses/chm/visualization/)  
 [Periodni.com](http://www.periodni.com/solcalc-chemical_compounds.html)  
 
-##Molecules on file: (in alphabetical and increasing number order)
+Here is a list of a few websites that help for making this site happen:
+[Catalog flatworldknowledge:Line structures](http://catalog.flatworldknowledge.com/bookhub/reader/2547?e=gob-ch12_s04)  
+[Chemistry libretexts:Line structures](http://chem.libretexts.org/Core/Organic_Chemistry/Fundamentals/Structure_of_Organic_Molecules)  
+[Chem.ucla:Resonance](http://www.chem.ucla.edu/~harding/tutorials/resonance/draw_res_str.html)
+[Webqc](http://www.webqc.org/molecular-weight-of-BrF2.html)  
+[Wikipedia:Resonance](https://en.wikipedia.org/wiki/Resonance_(chemistry))  
+[Wikipedia:Line structures](https://en.wikipedia.org/wiki/Skeletal_formula)  
+[WolframAlpha's widget](http://www.wolframalpha.com/widgets/view.jsp?id=689aa5a01c216d8b16ed0250cebdc702)
 
-CH4  
-CH3COOH  
-CH3COO^(-)  
-CO3^(2-)  
-H2O  
-N2  
-NH3  
-NH4^(+)  
-NO2^(-)  
-NO3^(-)  
-OH^(-)  
-PO4^(3-)  
-SCl2  
-XeF2  
-XeF3+  
-XeO3  
+Here is a list of websites that helped in finding molecules to add and their names:
+[Quia.com](https://www.quia.com/jg/125193list.html)
+[Endmemo.com](http://www.endmemo.com/chem/chemsearch.php)
+[TutorVista.com](http://www.tutorvista.com/chemistry/list-of-molecular-formulas)  
+[Periodni.com](http://www.periodni.com/solcalc-chemical_compounds.html)  
+[Reciprocalnet.org](http://www.reciprocalnet.org/edumodules/commonmolecules/list.html)  
 
-##TO ADD:
+##Our Database: (in alphabetical and increasing number order)
 
-AlCl4^(-)  
-BF3  
-BrF2^(+)  
-CCl4  
-C2H2  
-C2H4  
-CHCl3  
-CH2Br2  
-CH2F2  
-CH3OH  
-CN^(-)  
-COCl2  
-HCN  
-HCO^(+)  
-HCO3^(-)  
-H2CO3  
-H2S  
-H2CNN  
-ICl4^(-)  
-IF5  
-IO2^(-)  
-N2H2  
-OF2  
-PBr3  
-PCl6^(-)  
-PO3^(3-)  
-SCN^(-)  
-SO3  
-SO4^(2-)  
-SeBr6  
-XeO2F2  
-
+[Click here](link) to see a list of molecules already within the database and molecules that are ready to be added.
 

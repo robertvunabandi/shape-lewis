@@ -1,0 +1,40 @@
+body {
+	width: 85%;
+	margin: 0 auto;
+}
+h1 {
+	text-align: center;
+	text-decoration: underline;
+	font-size: 2rem;
+	padding: 0rem;
+	margin: 0rem;
+}
+pre {
+	font-size: 1.25rem;
+	padding: 0rem;
+	margin: 0rem;
+}
+table {
+	text-align: left;
+	margin: 1rem auto;
+}
+th {
+	text-decoration: underline;
+}
+td + td, th + th {
+	background-color: rgba(0,0,0,0.1);
+	display: inline-block;
+	width: 100%;
+	margin: 0px 6px;
+}
+td+td:hover, th+th:hover {
+	background-color: rgba(255,0,0,0.1);
+}
+.molecule {
+	/*color: rgba(150,0,0,1);*/
+	font-weight: bold;
+	text-align: right !important;
+}
+.molecule:hover {
+	color: red;
+}

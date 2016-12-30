@@ -76,27 +76,6 @@ header {
 	background-color: rgba(0,0,0,1);
 	z-index: 10;
 }
-
-//SECTION
-
-/*@media only screen and (max-width: 600px){
-	#enterMolecule {
-		font-size: 3.0rem;
-		min-width: 3rem;
-	}
-}
-@media only screen and (min-width: 601px) and (max-width: 1000px){
-	#enterMolecule {
-		font-size: 3.0rem;
-		min-width: 3rem;
-	}
-}
-@media only screen and (min-width: 1001px){
-	#enterMolecule {
-		font-size: 2.3rem;
-		min-width: 3rem;
-	}
-}*/
 section {
 	position: relative; max-width: $maxW; //max-width: 65%; min-width: 65%; 
 	text-align: center; // float: center;
@@ -110,7 +89,7 @@ section {
 	}
 }
 #drawingSpace {
-	font-family: menlo !important;
+	// font-family: menlo !important;
 	position: relative; min-height: 20rem; max-height: 20rem; min-width: $minW; max-width: $maxW; 
 	overflow: scroll; margin: 0 auto;
 	border: 0.1rem solid rgba(0,0,0,0.1); //border-radius: 15rem;
@@ -128,7 +107,7 @@ section {
 		}
 	}
 	span {
-		font-family: menlo !important;
+		font-family: 'Anonymous Pro', monospace !important;
 		transition: font-weight 300ms;
 	}
 	span:hover {
@@ -203,6 +182,17 @@ article {
 	background-color: rgba(255,0,0,0.08); 
 	overflow: hidden;
 	box-shadow: inset 0rem 0rem 0.6rem 0.07rem rgba(50,0,0,0.7);
+	form {
+		display: inline-block;
+		min-width: 85%;
+		margin: 0rem; padding: 0rem;
+		input {
+			min-width: 100%;
+			display: block;
+			line-height: 3rem;
+			padding: 0 1rem;
+		}
+	}
 	// font-size: 2rem;
 	#divBlock {
 		max-width: $maxW;
