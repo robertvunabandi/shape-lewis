@@ -12,3 +12,15 @@ Add this link somewhere. https://en.wikipedia.org/wiki/Lewis_structure
 Maybe add something on the website about why this?
 
 Fix the Node.js (backend side).
+
+Add the Google Statistics into it!
+
+Autocomplete search bar: 
+https://designshack.net/articles/javascript/create-a-simple-autocomplete-with-html5-jquery/
+http://www.w3schools.com/php/php_ajax_livesearch.asp
+
+CHECK LIST
+BrF2+, BrF2, BrF2-
+NO-? HNO (hyponitrous acid)?
+NO+?
+NO4-? HNO4 (pernitric acid)?

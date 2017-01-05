@@ -2,12 +2,17 @@ body {
 	width: 85%;
 	margin: 0 auto;
 }
-h1 {
-	text-align: center;
+#mainPre {
+	/*position: fixed;*/
+	text-align: right; display: block; line-height: 3rem; /*position:relative;*/
+}
+.h1 {
+	display: block;
+	text-align: center !important;
 	text-decoration: underline;
-	font-size: 2rem;
-	padding: 0rem;
-	margin: 0rem;
+	font-weight: bold;
+	font-size: 2rem !important;
+	margin: 0rem auto;
 }
 pre {
 	font-size: 1.25rem;
@@ -26,9 +31,19 @@ td + td, th + th {
 	display: inline-block;
 	width: 100%;
 	margin: 0px 6px;
+	transition: background-color 150ms, color 150ms;
+	line-height: 1.7rem;
 }
-td+td:hover, th+th:hover {
-	background-color: rgba(255,0,0,0.1);
+td+td:hover, th+th:hover, .onSite:hover, .toAdd:hover {
+	background-color: rgba(255,255,255,1) !important;
+}
+.onSite {
+	background-color: rgba(0,255,0,0.4) !important;
+	transition: background-color 150ms, color 150ms;
+}
+.toAdd {
+	background-color: rgba(255,0,0,0.3) !important;
+	transition: background-color 150ms, color 150ms;
 }
 .molecule {
 	/*color: rgba(150,0,0,1);*/
@@ -37,4 +52,20 @@ td+td:hover, th+th:hover {
 }
 .molecule:hover {
 	color: red;
+}
+a:link, a:visited {
+	text-decoration: none;
+	color: black;
+	padding: 0.5rem 0rem;
+	transition: background-color 200ms, color 200ms;
+}
+a:hover{
+	background-color: rgba(255,0,0,0.3) !important;
+}
+#mainLink {
+	padding: 0.5rem 1rem;
+}
+a:active {
+	background-color: rgba(55,0,0,1);
+	color: white;
 }

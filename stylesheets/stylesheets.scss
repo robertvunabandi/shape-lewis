@@ -108,10 +108,8 @@ section {
 	}
 	span {
 		font-family: 'Anonymous Pro', monospace !important;
-		transition: font-weight 300ms;
-	}
-	span:hover {
 		font-weight: bolder;
+		transition: font-weight 300ms;
 	}
 }
 #smallDisplay, #bigDisplay {
@@ -177,6 +175,8 @@ section {
 	}
 }
 
+
+
 article {
 	position: relative; min-width: $minW; // min-height: auto; max-height: auto; // min-width: 100%;
 	background-color: rgba(255,0,0,0.08); 
@@ -185,12 +185,46 @@ article {
 	form {
 		display: inline-block;
 		min-width: 85%;
+		max-width: 85%;
 		margin: 0rem; padding: 0rem;
-		input {
-			min-width: 100%;
+		input[type=text] {
 			display: block;
+			padding: 0 1rem; border: 0 none;
+			max-width: 30%;
+			overflow: hidden;
 			line-height: 3rem;
-			padding: 0 1rem;
+			transition: background-color 200ms, color 200ms;
+		}
+		input[type=text]:active, input[type=text]:hover  {
+			background-color: rgba(0,0,0,1);
+			color: rgba(255,255,255,0.85);
+		}
+		input[type=submit]{
+			display: block;
+			padding: 0.5rem; border: 0 none;
+			width: 42%;
+			text-decoration: none;
+			text-transform: uppercase;
+			transition: background-color 200ms;
+			background-color: white;
+		}
+		input[type=submit]:hover {
+			background-color: black;
+			color: white;
+		}
+		input[type=submit]:active {
+			background-color: rgba(115,0,0,1);
+			color: white;
+		}
+		textarea {
+			padding: 0.5rem 1rem; border: 0 none;
+			font-size: 1.5rem;
+			resize: none;
+			transition: background-color 200ms, color 200ms;
+		}
+		textarea:active, textarea:hover {
+			background-color: rgba(0,0,0,0.8);
+			color: white;
 		}
 	}
 	// font-size: 2rem;
@@ -261,3 +295,27 @@ a:visited {
 	z-index: 1000;
 }
 
+#backTo {
+	opacity: 0;
+	transition: opacity 300ms;
+	a:link, a:visited {
+		position: fixed;
+		display: block;
+		top: 0rem;
+		min-width: 100%;
+		padding: 0.75rem 1rem; margin: 0 auto;
+		text-align: center;
+		color: rgba(255,255,255,0.3) !important;
+		background-color: rgba(0,0,0,0.2);
+		transition: background-color 400ms !important, color 300ms !important;
+		text-shadow: none !important;
+	}
+	a:hover {
+		color: rgba(255,255,255,1) !important;
+		background-color: rgba(0,0,0,0.8) !important;
+	}
+	a:active {
+		color: rgba(255,255,255,1) !important;
+		background-color: rgba(255,0,0,0.8) !important;
+	}
+}

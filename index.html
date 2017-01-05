@@ -7,6 +7,8 @@
 	<meta name="keywords" content="lewis,structure,generator,shape,Lewis,dot,diagram,electron">
 	<meta name="author" content="Robert M. Vunabandi">
 	<meta name='revised' content='Sunday, January 1st, 2017, 1:00 am'>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- THIS VIEWPORT META MIGHT MESS UP THE MOBILE VERSION!!! -->
 	<script type="text/javascript" src="scripts/scripts.js"></script>
 	<link rel="stylesheet" type="text/css" href="stylesheets/stylesheets.css">
 	<link href="https://fonts.googleapis.com/css?family=Anonymous+Pro|Lato" rel="stylesheet">
@@ -41,12 +43,19 @@
 	<p>
 	This will help you see the Lewis structure of the molecule that you type in. Here are the guidelines for typing numbers in: </p>
 	<ol>
-		<li>Any number would go as a subscript. For example, dihydrogen oxide would be H2O.</li>
-		<li>In order to write superscripts, write use ^(superscript). For example, fluorine ion would be F^(-)</li>
+		<li>Any number would go as a subscript. For example, water would be H2O.</li>
+		<li>In order to write superscripts, write use ^(superscript). For example, fluorine ion (F<sup>-</sup>) would be F^(-)</li>
 		<li>Sometimes, the element you are looking for may not be saved in our database. If that happens, please submit that element here: <br> 
-		<form action="scripts/node.js" method="post"><input type="text" name="userInput" id="userInput"></form> <!-- <span style="text-transform: uppercase; font-size: 1rem !important; color: red !important;">WORKING ON IT!</span> --><br> 
-		In the meantime, you can <a href="displayData.html">check</a> the molecules saved in our database. <br></li>
+		<form action="scripts/node.js" method="post"><input type="text" name="userInput" id="userInput" size="15"></form> <!-- <span style="text-transform: uppercase; font-size: 1rem !important; color: red !important;">WORKING ON IT!</span> --><br> 
+		In the meantime, you can <a href="displayData.html" target="_blank">check</a> the molecules saved in our database. <br></li>
 		<li>Press the key "enter" to submit!</li>
+		<li><b>Have you noticed a problem or mistake somewhere? Would you like to give a feedback? Please, report here: <br>
+		<form action="scripts/node.js" method="post">
+		<textarea cols="45" rows="5" maxlength="1000" required spellcheck placeholder="type here..."></textarea>
+		<!-- <input type="email" name="userEmail"> -->
+		<input type="submit" value="Submit" name="userReport" style="border-radius: 0px;">
+		</form>
+		<br>Much thanks!</b></li>
 	</ol>
 	<p>
 	Sometimes, a "+" or "-" sign appears on the top right corner of an element: this is the formal charge of the element. Links to formal charge: <a href="https://en.wikipedia.org/wiki/Formal_charge">Wikipedia</a>, and <a href="http://www.masterorganicchemistry.com/2010/09/24/how-to-calculate-formal-charge/">Master Organic Chemistry</a>.<br>
@@ -58,5 +67,6 @@
 	</div>
 	</article>
 </div>
+<div id="backTo"><a href="#enterMolecule">Click here to display more molecules</a></div>
 </body>
 </html>

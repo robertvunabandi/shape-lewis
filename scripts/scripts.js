@@ -3,8 +3,11 @@ var countOfInstruction = 0, waiting = 0;
 window.addEventListener("load", giveWidth);
 window.addEventListener("load", giveHeight);
 window.addEventListener("load", setWidth);
-window.addEventListener("resize", giveWidth);
 window.addEventListener("load", setHeight);
+window.addEventListener("load", loadUpData);
+window.addEventListener("resize", giveWidth);
+window.addEventListener("scroll", displayBackTo);
+
 
 function giveWidth(){
 	actualWidth = document.getElementById("drawingSpace").offsetWidth;
@@ -28,6 +31,41 @@ function setHeight(){
 	accessIt.innerHTML = "";
 	accessIt.style.minHeight = actualHeight;
 	accessIt.style.lineHeight = actualHeight;
+}
+var jsonFile, data, dataOnSiteKeys, dataToAddKeys;
+function ajaxCall(){
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function(){
+		if (this.readyState == 4 && this.status == 200) {
+			jsonFile = this.responseText;
+			console.log("SUCCESS");
+		}
+	}
+	xhttp.open("POST", "data.json", true);
+	xhttp.send();
+}
+function loadUpData(){
+	ajaxCall();
+	setTimeout(function(){
+		data = JSON.parse(jsonFile);
+		dataOnSiteKeys = Object.keys(data.onSite);
+		dataToAddKeys = Object.keys(data.toAdd);
+		console.log("data saved");
+	}, 10);
+}
+function displayBackTo(){
+	var element = document.getElementById("backTo");
+	var scrollTop = document.body.scrollTop;
+	var op = 0;
+	if (scrollTop > 650){
+		element.style.opacity = 1;
+		element.style.display = "block";
+	} else {
+		element.style.opacity = 0;
+		setTimeout(function(){
+			element.style.display = "none";
+		}, 300);
+	}
 }
 function turnWordIntoHtmlElements(text,typeOfElements, name){
 	var result = [];
@@ -100,12 +138,12 @@ function detectBrowser(){
 //Below here are all the specific functions working in the background.
 //These need to be implemented for different browsers and different screen sizes.
 var twoLetSplit = 32, oneLetSplit = 25;
-function element(element, newLoc){
+function element(element, location){
 	//This location works in px! This is where the top left corner of an uppercase letter would be.
-	// var newLoc = recognizeLineDirection(location);
+	// var location = recognizeLineDirection(location);
 	var units = (8/5);
 	var xCorrection = 0, yCorrection = 4.7;
-	var x = (newLoc[0]*units) - (xCorrection*units), y = (newLoc[1]*units) - (yCorrection*units);
+	var x = (location[0]*units) - (xCorrection*units), y = (location[1]*units) - (yCorrection*units);
 	if (element === "-"){
 		var append = "<span style='position: absolute; color: rgba(255,50,50,0.9); font-size: 28px; left:"+(x)+"px; top: "+(y)+"px;'>"+element+"</span>";
 	} else if (element === "+"){
@@ -403,7 +441,7 @@ function nLSLinesV(location,n,initial){  //Line structure lines vertical oriente
 	// console.log("x:["+x+"]"); console.log("y:["+y+"]");
 	document.getElementById("drawn").innerHTML += append;
 }
-function recognizeLineDirection(direction){
+/*function recognizeLineDirection(direction){
 	var array = [];
 	array = direction.split(")");
 	array.pop();
@@ -413,7 +451,7 @@ function recognizeLineDirection(direction){
 		array[i] = array[i].replace('_', '');
 	}
 	return array;
-} //At some points, this will not be used anymore. We switching to arrays.
+} *///At some points, this will not be used anymore. We switching to arrays.
 //------------------------------------------------------------------------------------------------------
 //AID FUNCTIONS
 function locateMiddles(array,oneVar){
@@ -438,11 +476,88 @@ function locateMiddles(array,oneVar){
 	return result;
 	// console.log("WORKING ON IT");
 } //THIS IS USED INSIDE FUNCTIONS
+function fixName(nameOfMolecule){
+	var i = 1;
+	var regex;
+	if (nameOfMolecule.indexOf("^(") != -1){
+		var superscript = nameOfMolecule.slice((nameOfMolecule.indexOf("^(")+2),(nameOfMolecule.lastIndexOf(")")));
+		nameOfMolecule = nameOfMolecule.replace(superscript, "<sup>"+superscript+"</sup>");
+		nameOfMolecule = nameOfMolecule.replace(/\^\(|\)(?=\(\d)|\)(?!.)/g,"");
+		//nameOfMolecule = nameOfMolecule.replace(")","");
+		displayMolecule(nameOfMolecule);
+		for (i; i < 10; i++){
+			if (nameOfMolecule.indexOf(i) < nameOfMolecule.lastIndexOf("<")) {
+				// regex = new RegExp(i+"+(?=[a-z])|"+i+"+(?=<sup>)|"+i+"+(?=\d*[a-z])", "gi"); 
+				// regex = new RegExp(i+"(?=[1-9]*[a-z]+|[1-9]*<su)", "gi");
+				regex = new RegExp(i+"(?!\\+|\\-)", "g");
+				if (nameOfMolecule.match(regex) != null){
+					if (nameOfMolecule.match(regex).length > 1) {
+						nameOfMolecule = nameOfMolecule.replace(regex, "<sub>"+i+"</sub>");
+					} else nameOfMolecule = nameOfMolecule.replace(i, "<sub>"+i+"</sub>");
+				}
+			}
+		}
+	}
+	else {
+		for (i = 1; i < 10; i++){
+			regex = new RegExp(i, "g"); 
+			if (nameOfMolecule.match(regex) != null){
+				if (nameOfMolecule.match(regex).length > 1) {
+					nameOfMolecule = nameOfMolecule.replace(regex, "<sub>"+i+"</sub>");
+				} else nameOfMolecule = nameOfMolecule.replace(i, "<sub>"+i+"</sub>");
+			}
+		}
+	}
+	return nameOfMolecule;
+}
+function moleculeMatch(nameOfMolecule){
+	//this is given that we have a way to access the database without jQuery
+	//we use dataOnSiteKeys
+	var result;
+	var test = [], moleculeFinal = nameOfMolecule;
+	if (/\d\d\-$|\d\d\+$/.test(nameOfMolecule)){
+		nameOfMolecule = nameOfMolecule.replace(/[1-9]\-$|[1-9]\+$/g, "");
+	}
+	nameOfMolecule = nameOfMolecule.replace(/\+|\-|\^\(|\^[1-9]|\+\)|[1-9](?=\+\)|\-\))|\)$/g, "");
+
+	var regex = new RegExp(nameOfMolecule, "i");
+	for (x in dataOnSiteKeys){
+		if (regex.test(dataOnSiteKeys[x]) == true) {
+			test.push(dataOnSiteKeys[x]);
+		}
+	}
+	if (test.length === 1){ //if it found only one match, then it must be it
+		result = test[0];
+		return result;
+	} else {
+		for (x in test){ //if it finds a perfect match, then it must be it
+			if (moleculeFinal === test[x]){
+				result = test[x]; return result;
+			}
+		}
+		for (x in test){ //now we test both lowercase and uppercase
+			if (moleculeFinal.toLowerCase() === test[x].toLowerCase()){
+				result = test[x]; return result;
+			} else if (moleculeFinal.toUpperCase() === test[x].toUpperCase()){
+				result = test[x]; return result;
+			}
+		}
+		for (x in test){ //take either the positive or negative ion, this one is tricky I am not sure it's always true
+			if (/\+/.test(moleculeFinal) && /\+/.test(test[x])){
+				result = test[x]; return result;
+			} else if (/-/.test(moleculeFinal) && /-/.test(test[x])){
+				result = test[x]; return result;
+			}
+		}
+	}
+	test.push("TYPED:" + moleculeFinal);
+	return test;
+}
 //--------------------------------------------------------------------------------------------------
 //This right here is going to be the main function
 //This also needs to be fixed for different browsers and stuffs.
 
-var theMolecule;
+var theMolecule; //this keeps a memory of the molecule typed just in case.
 function displayMolecule(molecule) {
 	theMolecule = molecule;
 	var linksToLineStructures = "Links to line structures: <a href='https://en.wikipedia.org/wiki/Skeletal_formula'>Wikipedia</a>, <a href='http://chem.libretexts.org/Core/Organic_Chemistry/Fundamentals/Structure_of_Organic_Molecules'>Chemistry libretexts</a>, and <a href='http://catalog.flatworldknowledge.com/bookhub/reader/2547?e=gob-ch12_s04'> catalog flatworldknowledge</a>.";
@@ -454,9 +569,44 @@ function displayMolecule(molecule) {
 	var height = (dSChange.offsetHeight)*(200/drawnHeight); //console.log(height);
 	var units = (5/8)*actualWidth;
 	var initialValueOfDS = "<svg viewbox ='0 0 "+units+" 200' id='drawn'></svg>";
+	/*function carbonCompounds(molecule){
+		//As of right now, this only involves C, H, O
+		var length = molecule.length;
+		dSChange.innerHTML = initialValueOfDS;
+		switch (length){
+			case "2":
+		}
+		sDChange.innerHTML = "SOMETHING";
+		bDChange.innerHTML = "";
+	}*/
+	function initialize(){dSChange.innerHTML = initialValueOfDS;}
+	var molec;
+	function finalize(){
+		molec = moleculeMatch(molecule);
+		var result = fixName(molec);
+		sDChange.innerHTML = result+", "+ data.onSite[molec];
+	}
 	switch (molecule) {
+		case "AlCl3":case "alcl3":case "ALCL3":{
+			// dSChange.innerHTML = initialValueOfDS;
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nVLines([inXEls,inY-42.5], 1);
+			nHLines([inX,inY], 2);
+			nElements(["Cl","Al","Cl","Cl"],[inXEls-67,inYEls+1.5,inXEls-8,inYEls+1.5,inXEls+54,inYEls+1.5,inXEls-8.5,inYEls-53]);
+			sixDots([inXEls-62.5,inYEls-6.15],"right",true);
+			sixDots([inXEls+58.5,inYEls-6.15],"left",true);
+			sixDots([inXEls-16.5,inYEls-52],"bottom",true);
+			// sDChange.innerHTML = "AlCl3, Aluminum chloride";
+			// bDChange.innerHTML = "";
+			finalize();
+			bDChange.innerHTML = "";
+		}
+		break;
 		case "alcl4^(-)": case "alcl4^-": case "alcl4-": case "AlCl4^(-)": case "AlCl4^-": case "AlCl4-":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nVLines([inXEls,inY-49.5], 2);
@@ -467,34 +617,34 @@ function displayMolecule(molecule) {
 			sixDots([inXEls-15,inYEls-59],"bottom",true);
 			sixDots([inXEls-15,inYEls+61],"top",true);
 			nElements(["-"],[inXEls+5,inYEls-10]);
-			sDChange.innerHTML = "AlCl4^(-), Tetrachloroaluminate";
+			// sDChange.innerHTML = "AlCl4^(-), Tetrachloroaluminate";
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "aGcl": case "agcL": case "Agcl": case "agCl": case "agcl": case "AgCl":{
-			dSChange.innerHTML = initialValueOfDS;
+			initialize();
 			var inX = (units/2)-15, inY = height/2;
 			var inXEls = inX-15, inYEls = inY - 7;
 			nHLinesBonds([inX,inY], 1, 1);
 			nElements(["Ag","Cl"],[inXEls-12,inYEls,inXEls+53,inYEls]);
 			sixDots([inXEls+57.5,inYEls-7], "left", true);
-			sDChange.innerHTML = "AgCl, Silver (I) chloride";
+			finalize();
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "AgF":case "AgF":case "agf":{
-			dSChange.innerHTML = initialValueOfDS;
+			initialize();
 			var inX = (units/2)-15, inY = height/2;
 			var inXEls = inX-15, inYEls = inY - 7;
 			nHLinesBonds([inX,inY], 1, 1);
 			nElements(["Ag","F"],[inXEls-12,inYEls,inXEls+53,inYEls]);
 			sixDots([inXEls+53.5,inYEls-7], "left", false);
-			sDChange.innerHTML = "AgCl, Silver (I) fluoride";
+			finalize();
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "BF3":case "bF3":case "Bf3":case "bf3":{
-			dSChange.innerHTML = initialValueOfDS;
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nVLines([inXEls,inY-42.5], 1);
@@ -503,23 +653,83 @@ function displayMolecule(molecule) {
 			sixDots([inXEls-64.5,inYEls-7.15],"right",false);
 			sixDots([inXEls+55.5,inYEls-7.15],"left",false);
 			sixDots([inXEls-12,inYEls-52],"bottom",false);
-			sDChange.innerHTML = "BF3, Boron trifluoride";
+			finalize();
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "Br2": case "br2": case "BR2": case "bR2":{
-			dSChange.innerHTML = initialValueOfDS;
+			initialize();
 			var inX = (units/2)-15, inY = height/2;
 			var inXEls = inX-15, inYEls = inY - 7;
 			nHLinesBonds([inX,inY], 1, 1);
 			nElements(["Br","Br"],[inXEls-6,inYEls+1.5,inXEls+49,inYEls+1.5]);
 			sixDots([inXEls-2,inYEls-6], "right", true); sixDots([inXEls+16+37.5,inYEls-6], "left", true);
-			sDChange.innerHTML = "Br2, Bromine";
+			finalize();
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "BaS": case "Bas": case "bas": case "baS":{
+			initialize();
+			var inX = (units/2)-15, inY = height/2;
+			var inXEls = inX-15, inYEls = inY - 7;
+			nHLinesBonds([inX,inY], 1, 2);
+			nElements(["S","Ba"],[inXEls,inYEls+1,inXEls+49,inYEls+1]);
+			fourVDots([inXEls+0.5,inYEls-6.5]); //fourVDots([inXEls+16+34,inYEls-6.5]);
+			finalize();
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "BrF2^(+)": case "BrF2^+": case "BrF2+":{
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLines([inX,inY-1], 2);
+			nElements(["F","Br","F"],[inXEls-65,inYEls,inXEls-9,inYEls,inXEls+55,inYEls]);
+			nElements(["+"],[inXEls+8,inYEls-9]);
+			fourVDots([inXEls-4.5,inYEls-7.15]);
+			sixDots([inXEls-64.5,inYEls-8.0],"right",false);
+			sixDots([inXEls+55.5,inYEls-8.0],"left",false);
+			// sDChange.innerHTML = "BrF2^(+), Bromine difluoride cation";
+			bDChange.innerHTML = "";
+			
+		}
+		break;
+		case "BrF2": case "BrF2": case "BrF2":
+		{
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLines([inX,inY-1], 2);
+			nElements(["F","Br","F"],[inXEls-65,inYEls,inXEls-9,inYEls,inXEls+55,inYEls]);
+			sixDots([inXEls-64.5,inYEls-8.0],"right",false);
+			sixDots([inXEls+55.5,inYEls-8.0],"left",false);
+			twoHDots([inXEls-4.20,inYEls-7.15]);
+			twoTDots([inXEls-13,inYEls+13], 30); dot([inXEls+6,inYEls+4+13]);
+			// sDChange.innerHTML = "BrF2, Bromine difluoride";
+			finalize();
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "BrF2^(-)": case "BrF2^-": case "BrF2-":{
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLines([inX,inY-1], 2);
+			nElements(["F","Br","F"],[inXEls-65,inYEls,inXEls-9,inYEls,inXEls+55,inYEls]);
+			nElements(["-"],[inXEls+8,inYEls-9]);
+			//fourVDots([inXEls-4.5,inYEls-7.15]);
+			sixDots([inXEls-64.5,inYEls-8.0],"right",false);
+			sixDots([inXEls+55.5,inYEls-8.0],"left",false);
+			twoHDots([inXEls-4.20,inYEls-7.15]);
+			twoTDots([inXEls-13,inYEls+13], 30); twoTDots([inXEls+6,inYEls+4+13], -30);
+			// sDChange.innerHTML = "BrF2^(-), Bromine difluoride anion";
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "cCl4": case "Ccl4":case "ccl4": case "CCl4":{
-			dSChange.innerHTML = initialValueOfDS;
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nVLines([inXEls,inY-49.5], 2);
@@ -529,24 +739,25 @@ function displayMolecule(molecule) {
 			sixDots([inXEls+59.5,inYEls-7.15],"left",true);
 			sixDots([inXEls-15,inYEls-59],"bottom",true);
 			sixDots([inXEls-15,inYEls+61],"top",true);
-			// nElements(["-"],[inXEls+5,inYEls-10]);
-			sDChange.innerHTML = "CCl4, Carbon tetrachloride";
+			finalize();
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "methane": case "ch4": case "Ch4": case "cH4": case "CH4":{
-			dSChange.innerHTML = initialValueOfDS;
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nHLines([inX,inY], 2);
 			nVLines([inXEls,inY-48.5], 2);
 			nElements(["H","C","H","H","H"],[inXEls-67,inYEls,inXEls-4.5,inYEls,inXEls+54,inYEls,inXEls-4.5,inYEls-60.5,inXEls-4.5,inYEls+62.5]);
-			sDChange.innerHTML = "CH4, Methane";
+			// sDChange.innerHTML = "CH4, Methane";
+			// bDChange.innerHTML = "";
+			finalize();
 			bDChange.innerHTML = "";
-			break;
 		}
+		break;
 		case "CH3COOH": case "ch3cooh":{
-			dSChange.innerHTML = initialValueOfDS;
+			initialize();
 			var inX = (units/2)-26.3, inY = height/2;
 			var inXEls = inX+26.3, inYEls = inY - 7;
 			nLSLinesH([inX,inY],2,false);
@@ -554,14 +765,16 @@ function displayMolecule(molecule) {
 			nElements(["O","OH"], [inXEls-6.6,inY-47,inXEls+28,inY+9.5]);
 			fourHDots([inXEls-13.5,inY-47]);
 			fourVDots([inXEls+29.5,inY+2.75]);
-			sDChange.innerHTML = "CH3COOH, Acetic acid";
+			// sDChange.innerHTML = "CH3COOH, Acetic acid";
+			finalize();
 			bDChange.innerHTML = linksToLineStructures;
 			break;
 		}
 		case "c2h3coo-": case "C2H3COO-": case "c2h3o2^-": case "c2h3o2^(-)": case "C2H3O2^-": case "C2H3O2^(-)": case "ch3coo-": case "CH3COO-":
 		case "ch3coo^-": case "ch3coo^(-)": case "ch3COO^-": case "ch3COO^(-)": case "CH3cOO^-": case "CH3cOO^(-)": case "cH3COO^-": case "cH3COO^(-)": case "CH3COO^-":
 		case "CH3COO^(-)": {
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-26.3, inY = height/2;
 			var inXEls = inX+26.3, inYEls = inY - 7;
 			nLSLinesH([inX,inY],2,false);
@@ -570,36 +783,54 @@ function displayMolecule(molecule) {
 			nElements(["-"], [inXEls+40,inY]);
 			fourHDots([inXEls-13.5,inY-47]);
 			sixDots([inXEls+29.5,inY+2.75],"left",false);
-			sDChange.innerHTML = "CH3COO^(-), Acetate ion";
+			// sDChange.innerHTML = "CH3COO^(-), Acetate ion";
 			bDChange.innerHTML = linksToLineStructures;
 			break;
 		}
+		case "CN-": case "CN^-": case "CN^(-)":{
+			finalize();
+			initialize();
+			var inX = (units/2)-15, inY = height/2;
+			var inXEls = inX-15, inYEls = inY - 7;
+			nHLinesBonds([inX,inY], 1, 3);
+			nElements(["N","C"],[inXEls,inYEls+1.4,inXEls+49,inYEls+1.4]);
+			nElements(["-"],[inXEls+57,inYEls-8]);
+			twoVDots([inXEls-4,inYEls+2]); twoVDots([inXEls+16+49,inYEls+2]);
+			// sDChange.innerHTML = "CN^(-), Cyanide ion";
+			bDChange.innerHTML = "";
+		}
+		break;
 		case "CO":case "co": case "cO":{
-			dSChange.innerHTML = initialValueOfDS;
+			initialize();
 			var inX = (units/2)-15, inY = height/2;
 			var inXEls = inX-15, inYEls = inY - 7;
 			nHLinesBonds([inX,inY], 1, 3);
 			nElements(["C","O"],[inXEls,inYEls+1,inXEls+49,inYEls+1]);
 			nElements(["-","+"],[inXEls+7,inYEls-9,inXEls+49+7,inYEls-9]);
 			twoVDots([inXEls-4,inYEls+1.5]); twoVDots([inXEls+16+49,inYEls+1.5]);
-			sDChange.innerHTML = "CO, Carbon monoxide";
+			// sDChange.innerHTML = "CO, Carbon monoxide";
+			finalize();
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "CO2":case "co2": case "cO2":{
-			dSChange.innerHTML = initialValueOfDS;
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 6;
 			nHLinesBonds([inX,inY], 2, 2);
 			fourVDots([inXEls-67,inYEls-7.15]);
 			fourVDots([inXEls+55,inYEls-7.15]);
 			nElements(["O","C","O"],[inXEls-67,inYEls,inXEls-5,inYEls,inXEls+54,inYEls]);
-			sDChange.innerHTML = "CO2, Carbon dioxide";
+			// sDChange.innerHTML = "CO2, Carbon dioxide";
+			finalize();
 			bDChange.innerHTML = "";
 		}
 		break;
+		case "CO3-2": case "cO3^-2": case "cO3^(-2)": case "CO3^-2": case "CO3^(-2)":
 		case "CO32-": case "cO3^2-": case "cO3^(2-)": case "CO3^2-": case "CO3^(2-)":{
-			dSChange.innerHTML = initialValueOfDS;
+			molecule = "CO3^(2-)";
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nHLines([inX,inY], 2);
@@ -609,48 +840,147 @@ function displayMolecule(molecule) {
 			fourHDots([inXEls-12.20,inYEls+61.5]);
 			sixDots([inXEls-64.5,inYEls-7.15],"right",false);
 			sixDots([inXEls+55.5,inYEls-7.15],"left",false);
-			sDChange.innerHTML = "CO3^(2-), Carbonate ion";
+			// sDChange.innerHTML = "CO3^(2-), Carbonate ion";
+			bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
+		}
+		break;
+		case "ClO-":case "Clo-": case "clO-": case "clo-":
+		case "ClO^-":case "Clo^-": case "clO^-": case "clo^-":
+		case "ClO^(-)":case "Clo^(-)": case "clO^(-)": case "clo^(-)":{
+			finalize();
+			initialize();
+			var inX = (units/2)-15, inY = height/2;
+			var inXEls = inX-15, inYEls = inY - 7;
+			nHLinesBonds([inX,inY], 1, 1);
+			nElements(["Cl","O"],[inXEls-9,inYEls+1.5,inXEls+52,inYEls+1.5]);
+			sixDots([inXEls-4.5,inYEls-6], "right", true); sixDots([inXEls+16+37,inYEls-6], "left", false);
+			nElements(["-"],[inXEls+60,inYEls-8])
+			// sDChange.innerHTML = "ClO^(-), Hypochlorite ion";
+			// finalize();
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "ClO2-":case "Clo2-": case "clO2-": case "clo2-":
+		case "ClO2^-":case "Clo2^-": case "clO2^-": case "clo2^-":
+		case "ClO2^(-)":case "Clo2^(-)": case "clO2^(-)": case "clo2^(-)":{
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLinesBonds([inX,inY-0.5], 1, 2);
+			nHLines([inXEls+17.5,inY], 1);
+			nElements(["O","Cl","O"],[inXEls-67,inYEls+1,inXEls-9,inYEls+1,inXEls+54,inYEls+1]);
+			fourVDots([inXEls-66.5,inYEls-6.65]); fourVDots([inXEls-4.5,inYEls-6.65]);
+			sixDots([inXEls+55.5,inYEls-6.65],"left",false);
+			nElements(["-"],[inXEls+67,inYEls-10]);
+			// sDChange.innerHTML = "ClO2^(-), Chlorite ion";
+			bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
+		}
+		break;
+		case "ClO3-":case "Clo3-": case "clO3-": case "clo3-":
+		case "ClO3^-":case "Clo3^-": case "clO3^-": case "clo3^-":
+		case "ClO3^(-)":case "Clo3^(-)": case "clO3^(-)": case "clo3^(-)":{
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLinesBonds([inX,inY-0.5], 1, 2);
+			nHLines([inXEls+17.5,inY], 1);
+			nVLinesBonds([inXEls,inY+12], 1, 2);
+			nElements(["O","Cl","O","O"],[inXEls-67,inYEls+1,inXEls-9,inYEls+1,inXEls-5.5,inYEls+55,inXEls+54,inYEls+1]);
+			fourVDots([inXEls-66.5,inYEls-6.65]); twoHDots([inXEls-4.5,inYEls-6.65]);
+			fourHDots([inXEls-13.25,inYEls+56.5]); sixDots([inXEls+55.5,inYEls-6.65],"left",false);
+			nElements(["-"],[inXEls+67,inYEls-10]);
+			// sDChange.innerHTML = "ClO3^(-), Chlorate ion";
+			bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
+		}
+		break;
+		case "ClO4-":case "Clo4-": case "clO4-": case "clo4-":
+		case "ClO4^-":case "Clo4^-": case "clO4^-": case "clo4^-":
+		case "ClO4^(-)":case "Clo4^(-)": case "clO4^(-)": case "clo4^(-)":{
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLinesBonds([inX,inY-0.5], 1, 2);
+			nHLines([inXEls+17.5,inY], 1);
+			nVLinesBonds([inXEls,inY-48], 2, 2);
+			nElements(["O","Cl","O","O","O"],[inXEls-67,inYEls+1,inXEls-9,inYEls+1,inXEls-5.5,inYEls-59,inXEls-5.5,inYEls+60,inXEls+54,inYEls+1]);
+			fourVDots([inXEls-66.5,inYEls-6.65]);
+			fourHDots([inXEls-13.25,inYEls-58.5]); fourHDots([inXEls-13.25,inYEls+61.5]); 
+			sixDots([inXEls+55.5,inYEls-6.65],"left",false);
+			nElements(["-"],[inXEls+67,inYEls-10]);
+			// sDChange.innerHTML = "ClO4^(-), Perchlorate ion";
 			bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
 		}
 		break;
 		case "cl2": case "Cl2": case "CL2": case "cL2":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-15, inY = height/2;
 			var inXEls = inX-15, inYEls = inY - 7;
 			nHLinesBonds([inX,inY], 1, 1);
-			nElements(["Cl","Cl"],[inXEls-6,inYEls+1.5,inXEls+49,inYEls+1.5]);
-			sixDots([inXEls-2,inYEls-6], "right", true); sixDots([inXEls+16+37.5,inYEls-6], "left", true);
-			sDChange.innerHTML = "Cl2, Chlorine";
+			nElements(["Cl","Cl"],[inXEls-11,inYEls+1.5,inXEls+53,inYEls+1.5]);
+			sixDots([inXEls-7,inYEls-6], "right", true); sixDots([inXEls+20.5+37.5,inYEls-6], "left", true);
+			// sDChange.innerHTML = "Cl2, Chlorine";
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "CuBR2": case "CuBr2":{
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLines([inX,inY-1], 2);
+			nElements(["Br","Cu","Br"],[inXEls-74,inYEls,inXEls-9,inYEls,inXEls+55,inYEls]);
+			sixDots([inXEls-70,inYEls-8.0],"right",true);
+			sixDots([inXEls+60.5,inYEls-8.0],"left",true);
+			// sDChange.innerHTML = "CuBr2, Copper (II) bromide";
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "f2": case "F2":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-15, inY = height/2;
 			var inXEls = inX-15, inYEls = inY - 7;
 			nHLinesBonds([inX,inY], 1, 1);
 			nElements(["F","F"],[inXEls,inYEls+1.5,inXEls+49,inYEls+1.5]);
 			sixDots([inXEls+1,inYEls-6], "right", false); sixDots([inXEls+16+33.5,inYEls-6], "left", false);
-			sDChange.innerHTML = "F2, Fluorine";
+			// sDChange.innerHTML = "F2, Fluorine";
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "hbr": case "Hbr": case "hbR": case "HbR": case "hBr": case "HBr": case "hBR": case "HBR":{
+			finalize();
+			initialize();
+			var inX = (units/2)-15, inY = height/2;
+			var inXEls = inX-15, inYEls = inY - 7;
+			nHLinesBonds([inX,inY], 1, 1);
+			nElements(["Br","H"],[inXEls-10,inYEls+1.5,inXEls+52,inYEls+1.5]);
+			sixDots([inXEls-5,inYEls-6], "right", true); 
+			// sDChange.innerHTML = "HCl, Hydrobromic acid";
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "HCN": case "hCN": case "HcN": case "HCn": case "hcn":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nHLines([inX,inY], 1);
 			nHLinesBonds([inXEls+17.5,inY], 1, 3);
 			twoVDots([inXEls+70,inYEls+1.5]);
 			nElements(["H","C","N"],[inXEls-67,inYEls,inXEls-6,inYEls,inXEls+54,inYEls]);
-			sDChange.innerHTML = "HCN, Hydrogen cyanide";
+			// sDChange.innerHTML = "HCN, Hydrogen cyanide";
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "HCO^(+)": case "hCO^(+)": case "HcO^(+)": case "HCo^(+)": case "hco^(+)":
 		case "HCO^+": case "hCO^+": case "HcO^+": case "HCo^+": case "hco^+":
 		case "HCO+": case "hCO+": case "HcO+": case "HCo+": case "hco+":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nHLines([inX,inY], 1);
@@ -671,13 +1001,14 @@ function displayMolecule(molecule) {
 			fourVDots([inXEls+56,inYEls+1.5+38]);
 			nElements(["H","C","O"],[inXEls-27,inYEls+46,inXEls-6,inYEls+46,inXEls+54,inYEls+46]);
 			nElements(["+"],[inXEls-30+10,inYEls+45-10]);
-			sDChange.innerHTML = "HCO^(+), Formyl cation";
+			// sDChange.innerHTML = "HCO^(+), Formyl cation";
 			bDChange.innerHTML = about("HCO^(+)") + "<br>" +linksToResonance;
 		}
 		break;
 		case "hCO3-": case "hcO3^-": case "hcO3^(-)": case "hCO3^-": case "hCO3^(-)":
 		case "HCO3-": case "HcO3^-": case "HcO3^(-)": case "HCO3^-": case "HCO3^(-)":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nHLines([inX,inY], 3);
@@ -687,45 +1018,253 @@ function displayMolecule(molecule) {
 			fourHDots([inXEls-12.20,inYEls+64.5]);
 			sixDots([inXEls-64.5,inYEls-7.15],"right",false);
 			fourVDots([inXEls+61,inYEls-7.15]);
-			sDChange.innerHTML = "HCO3^(-), Hydrogen carbonate ion";
+			// sDChange.innerHTML = "HCO3^(-), Hydrogen carbonate ion";
+			bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
+		}
+		break;
+		case "hcl": case "Hcl": case "hcL": case "HcL": case "hCl": case "HCl": case "hCL": case "HCL":{
+			finalize();
+			initialize();
+			var inX = (units/2)-15, inY = height/2;
+			var inXEls = inX-15, inYEls = inY - 7;
+			nHLinesBonds([inX,inY], 1, 1);
+			nElements(["Cl","H"],[inXEls-10,inYEls+1.5,inXEls+52,inYEls+1.5]);
+			sixDots([inXEls-5,inYEls-6], "right", true); 
+			// sDChange.innerHTML = "HCl, Hydrochloric acid";
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "HClO":case "HClo": case "HclO": case "Hclo":
+		case "hClO":case "hClo": case "hclO": case "hclo":{
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLinesBonds([inX,inY-0.5], 2, 1);
+			nElements(["Cl","O","H"],[inXEls-74,inYEls+1,inXEls-5.5,inYEls+1,inXEls+55,inYEls+1]);
+			sixDots([inXEls-69.5,inYEls-6.65], "right", true); fourVDots([inXEls-5,inYEls-6.65]);
+			// sDChange.innerHTML = "HClO, Hypochlorous acid";
+			bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
+		}
+		break;
+		case "HClO2":case "HClo2": case "HclO2": case "Hclo2":
+		case "hClO2":case "hClo2": case "hclO2": case "hclo2":{
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLinesBonds([inX,inY-0.5], 1, 2);
+			nHLines([inXEls+17.5,inY], 2);
+			nElements(["O","Cl","O","H"],[inXEls-67,inYEls+1,inXEls-9,inYEls+1,inXEls+60,inYEls+1,inXEls+120,inYEls+1]);
+			fourVDots([inXEls-66.5,inYEls-6.65]); fourVDots([inXEls-4.5,inYEls-6.65]);
+			fourVDots([inXEls+60.5,inYEls-6.65]);
+			// sDChange.innerHTML = "HClO2, Chlorous acid";
+			bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
+		}
+		break;
+		case "HClO3":case "HClo3": case "HclO3": case "Hclo3":
+		case "hClO3":case "hClo3": case "hclO3": case "hclo3":{
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLinesBonds([inX,inY-0.5], 1, 2);
+			nHLines([inXEls+17.5,inY], 2);
+			nVLinesBonds([inXEls,inY+12], 1, 2);
+			nElements(["O","Cl","O","O","H"],[inXEls-67,inYEls+1,inXEls-9,inYEls+1,inXEls-5.5,inYEls+55,inXEls+60,inYEls+1,inXEls+120,inYEls+1]);
+			fourVDots([inXEls-66.5,inYEls-6.65]); twoHDots([inXEls-4.5,inYEls-6.65]);
+			fourHDots([inXEls-13.25,inYEls+56.5]); fourVDots([inXEls+60.5,inYEls-6.65]);
+			// sDChange.innerHTML = "HClO3, Chloric acid";
+			bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
+		}
+		break;
+		case "HClO4":case "HClo4": case "HclO4": case "Hclo4":
+		case "hClO4":case "hClo4": case "hclO4": case "hclo4":{
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLinesBonds([inX,inY-0.5], 1, 2);
+			nHLines([inXEls+17.5,inY], 2);
+			nVLinesBonds([inXEls,inY-48], 2, 2);
+			nElements(["O","Cl","O","O","O","H"],[inXEls-67,inYEls+1,inXEls-9,inYEls+1,inXEls-5.5,inYEls-59,inXEls-5.5,inYEls+60,inXEls+60,inYEls+1,inXEls+120,inYEls+1]);
+			fourVDots([inXEls-66.5,inYEls-6.65]);
+			fourHDots([inXEls-13.25,inYEls-58.5]); fourHDots([inXEls-13.25,inYEls+61.5]); 
+			fourVDots([inXEls+60.5,inYEls-6.65]);
+			// sDChange.innerHTML = "HClO4, Perchloric acid";
+			bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
+		}
+		break;
+		case "hf": case "Hf": case "hF": case "HF":{
+			finalize();
+			initialize();
+			var inX = (units/2)-15, inY = height/2;
+			var inXEls = inX-15, inYEls = inY - 7;
+			nHLinesBonds([inX,inY], 1, 1);
+			nElements(["F","H"],[inXEls,inYEls+1.5,inXEls+52,inYEls+1.5]);
+			sixDots([inXEls+1,inYEls-6], "right", false); 
+			// sDChange.innerHTML = "HF, Hydrofluoric acid";
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "HI": case "hi": case "hI": case "Hi":{
+			finalize();
+			initialize();
+			var inX = (units/2)-15, inY = height/2;
+			var inXEls = inX-15, inYEls = inY - 7;
+			nHLinesBonds([inX,inY], 1, 1);
+			nElements(["I","H"],[inXEls,inYEls+1.5,inXEls+52,inYEls+1.5]);
+			sixDots([inXEls+1,inYEls-6], "right", false); 
+			// sDChange.innerHTML = "HI, Hydroiodic acid";
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "HIo": case "hio": case "hIo": case "Hio":
+		case "HIO": case "hiO": case "hIO": case "HiO":{
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLines([inX,inY], 2);
+			nElements(["H","O","I"],[inXEls-67,inYEls+1,inXEls-6,inYEls+1,inXEls+54,inYEls+1]);
+			fourVDots([inXEls-5,inYEls-6.75]); sixDots([inXEls+55,inYEls-6.75],"left",false);
+			// sDChange.innerHTML = "HIO, Hypoiodous acid";
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "HIo2": case "hio2": case "hIo2": case "Hio2":
+		case "HIO2": case "hiO2": case "hIO2": case "HiO2":{
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLines([inX,inY], 2);
+			nHLinesBonds([inX+130,inY-0.5], 1, 2);
+			nElements(["H","O","I","O"],[inXEls-67,inYEls+1,inXEls-6,inYEls+1,inXEls+60,inYEls+1,inXEls+124,inYEls+1]);
+			fourVDots([inXEls-5,inYEls-6.75]); fourVDots([inXEls+61,inYEls-6.75]); fourVDots([inXEls+125,inYEls-6.75]);
+			// sDChange.innerHTML = "HIO2, Iodous acid";
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "HIo3": case "hio3": case "hIo3": case "Hio3":
+		case "HIO3": case "hiO3": case "hIO3": case "HiO3":{
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLines([inX,inY], 2);
+			nHLinesBonds([inX+130,inY-0.5], 1, 2);
+			nVLinesBonds([inX+112.75,inY+13.5], 1, 2);
+			nElements(["H","O","I","O","O"],[inXEls-67,inYEls+1,inXEls-6,inYEls+1,inXEls+60,inYEls+1,inXEls+59.5,inYEls+60,inXEls+124,inYEls+1]);
+			fourVDots([inXEls-5,inYEls-6.75]); twoHDots([inXEls+61,inYEls-6.75]); 
+			fourHDots([inXEls+52,inYEls+60.75]); 
+			fourVDots([inXEls+125,inYEls-6.75]);
+			// sDChange.innerHTML = "HIO3, Iodic acid";
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "HIo4": case "hio4": case "hIo4": case "Hio4":
+		case "HIO4": case "hiO4": case "hIO4": case "HiO4":{
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLines([inX,inY], 2);
+			nHLinesBonds([inX+130,inY-0.5], 1, 2);
+			nVLinesBonds([inX+112.75,inY-47.9], 2, 2);
+			nElements(["H","O","I","O","O","O"],[inXEls-67,inYEls+1,inXEls-6,inYEls+1,inXEls+60,inYEls+1,inXEls+59.5,inYEls-58,inXEls+59.5,inYEls+60,inXEls+124,inYEls+1]);
+			fourVDots([inXEls-5,inYEls-6.75]); 
+			fourHDots([inXEls+52,inYEls-57]); fourHDots([inXEls+52,inYEls+60.75]); 
+			fourVDots([inXEls+125,inYEls-6.75]);
+			// sDChange.innerHTML = "HIO3, Iodic acid";
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "hno2": case "hNO2": case "hnO2": case "Hno2": case "HNO2": case "HnO2": {
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLinesBonds([inX,inY], 1, 2);
+			nHLines([inXEls+17.5,inY], 2);
+			nElements(["O","N","O","H"],[inXEls-67,inYEls+1,inXEls-6,inYEls+1,inXEls+59,inYEls+1,inXEls+120,inYEls+1]);
+			fourVDots([inXEls-66.5,inYEls-6.75]); twoHDots([inXEls-5,inYEls-6.75]); fourVDots([inXEls+60,inYEls-6.75]);
+			// sDChange.innerHTML = "HNO2, Nitrous acid";
+			bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
+		}
+		break;
+		case "hno3": case "hNO3": case "hnO3": case "hnO3": 
+		case "Hno3": case "HNO3": case "HnO3": case "HnO3": {
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLinesBonds([inX,inY], 1, 2);
+			nHLines([inXEls+17.5,inY], 2);
+			nVLines([inXEls-1,inY+15.5], 1);
+			nElements(["O","N","O","O","H"],[inXEls-67,inYEls+1,inXEls-6,inYEls+1,inXEls-6,inYEls+62.5,inXEls+59,inYEls+1,inXEls+120,inYEls+1]);
+			fourVDots([inXEls-66.5,inYEls-6.75]); sixDots([inXEls-13,inYEls+64.5],"top",false); fourVDots([inXEls+60,inYEls-6.75],"left",false);
+			nElements(["-","+"],[inXEls+5,inYEls+53.5, inXEls+5,inYEls-10]);
+			// sDChange.innerHTML = "HNO3, Nitric acid";
 			bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
 		}
 		break;
 		case "H2": case "h2":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-15, inY = height/2;
 			var inXEls = inX-15, inYEls = inY - 7;
 			nHLinesBonds([inX,inY], 1, 1);
 			nElements(["H","H"],[inXEls,inYEls+1,inXEls+51,inYEls+1]);
-			sDChange.innerHTML = "H2, Hydrogen";
+			// sDChange.innerHTML = "H2, Hydrogen";
 			bDChange.innerHTML = "";
 		}
 		break;
+		case "h2CO3": case "h2cO3": case "h2cO3": case "h2CO3": case "h2CO3":
+		case "H2CO3": case "H2cO3": case "H2cO3": case "H2CO3": case "H2CO3":{
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			// nHLines([inX,inY], 3);
+			nHLines([inX-65,inY], 4);
+			nVLinesBonds([inXEls+1,inY+15.5], 1, 2);
+			nElements(["O","C","O","O","H","H"],[inXEls-65-5,inYEls+1,inXEls-5,inYEls+1,inXEls+58.5,inYEls+1,inXEls-4.5,inYEls+62.5, inXEls+118,inYEls+1,inXEls-130,inYEls+1]);
+			fourHDots([inXEls-12.20,inYEls+64.5]);
+			fourVDots([inXEls-64.5-5,inYEls-7.15],"right",false);
+			fourVDots([inXEls+61,inYEls-7.15]);
+			// sDChange.innerHTML = "H2CO3, Carbonic acid";
+			bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
+		}
+		break;
 		case "water": case "h2O": case "H2o": case "h2o": case "H2O":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 6;
 			nHLines([inX,inY], 2);
 			fourVDots([inXEls-4.20,inYEls-7.5]);
 			nElements(["H","O","H"],[inXEls-67,inYEls,inXEls-5,inYEls,inXEls+54,inYEls]);
-			sDChange.innerHTML = "H2O, Dihydrogen monoxide";
+			// sDChange.innerHTML = "H2O, Dihydrogen monoxide";
 			bDChange.innerHTML = "";
 		}
 		break;
-	case "h2S": case "H2s": case "h2s": case "H2S":{
-			dSChange.innerHTML = initialValueOfDS;
+		case "h2S": case "H2s": case "h2s": case "H2S":{
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 6;
 			nHLines([inX,inY], 2);
 			fourVDots([inXEls-4.20,inYEls-7.5]);
 			nElements(["H","S","H"],[inXEls-67,inYEls,inXEls-5,inYEls,inXEls+54,inYEls]);
-			sDChange.innerHTML = "H2S, Dihydrogen sulfide";
+			// sDChange.innerHTML = "H2S, Hydrosulfuric acid";
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "h3o+":case "h3o^+":case "h3o^(+)": case "H3o+":case "H3o^+":case "H3o^(+)":
 		case "h3O+":case "h3O^+":case "h3O^(+)": case "H3O+":case "H3O^+":case "H3O^(+)":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nHLines([inX,inY], 2);
@@ -733,120 +1272,264 @@ function displayMolecule(molecule) {
 			nElements(["H","O","H","H"],[inXEls-67,inYEls,inXEls-5.5,inYEls,inXEls+54,inYEls,inXEls-5.5,inYEls+62.5]);
 			nElements(["+"],[inXEls+5,inYEls-10]);
 			twoHDots([inXEls-4.7,inY-13.5]);
-			sDChange.innerHTML = "H3O^(+), Hydronium ion";
+			// sDChange.innerHTML = "H3O^(+), Hydronium ion";
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "i2": case "I2":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-15, inY = height/2;
 			var inXEls = inX-15, inYEls = inY - 7;
 			nHLinesBonds([inX,inY], 1, 1);
 			nElements(["I","I"],[inXEls,inYEls+1.5,inXEls+49,inYEls+1.5]);
 			sixDots([inXEls+1,inYEls-6], "right", false); sixDots([inXEls+16+33.5,inYEls-6], "left", false);
-			sDChange.innerHTML = "I2, Iodine";
-			bDChange.innerHTML = "";
-		}
-		break;
-		case "n2": case "N2":{
-			dSChange.innerHTML = initialValueOfDS;
-			var inX = (units/2)-15, inY = height/2;
-			var inXEls = inX-15, inYEls = inY - 7;
-			nHLinesBonds([inX,inY], 1, 3);
-			nElements(["N","N"],[inXEls,inYEls+1,inXEls+49,inYEls+1]);
-			twoVDots([inXEls-4,inYEls+1.5]); twoVDots([inXEls+16+49,inYEls+1.5]);
-			sDChange.innerHTML = "N2, Nitrogen";
+			// sDChange.innerHTML = "I2, Iodine";
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "nh3": case "Nh3": case "nH3": case "NH3":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nHLines([inX,inY], 2);
 			nVLines([inXEls-1,inY+15.5], 1);
 			nElements(["H","N","H","H"],[inXEls-67,inYEls,inXEls-5.5,inYEls,inXEls+54,inYEls,inXEls-5.5,inYEls+62.5]);
 			twoHDots([inXEls-4.7,inY-13.5]);
-			sDChange.innerHTML = "NH3, Ammonia";
+			// sDChange.innerHTML = "NH3, Ammonia";
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "nh4+": case "NH4+": case "nh4^": case "nh4^(+)": case "nh4^+": case "nh4^(+)": case "nH4^+": case "nH4^(+1)": case "nH4^+":
 		case "nH4^(+)": case "Nh4^+1": case "Nh4^(+)": case "Nh4^+": case "Nh4^(+)": case "NH4^+1": case "NH4^(+1)": case "NH4^+":
 		case "NH4^(+)":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nHLines([inX,inY], 2);
-			nVLines([inXEls,inY-48.5], 2);
-			nElements(["H","N","H","H","H"],[inXEls-67,inYEls,inXEls-6,inYEls,inXEls+54,inYEls,inXEls-6,inYEls-60.5,inXEls-6,inYEls+62.5]);
+			nVLines([inXEls-1,inY-48.5], 2);
+			nElements(["H","N","H","H","H"],[inXEls-67,inYEls,inXEls-5,inYEls,inXEls+54,inYEls,inXEls-5,inYEls-60.5,inXEls-5,inYEls+62.5]);
 			element("+",[inXEls+2,inYEls-10]);
-			sDChange.innerHTML = "NH4^(+), Ammonium ion";
+			// sDChange.innerHTML = "NH4^(+), Ammonium ion";
 			bDChange.innerHTML = "";
 				}
 		break;
-		case "no2-": case "NO2-": case "No2^-": case "No2^(-)": case "nO2^-": case "nO2^(-)": case "no2^-": case "no2^(-)": case "NO2^-":
-		case "NO2^(-)":{
-			dSChange.innerHTML = initialValueOfDS;
+		case "NO": case "no":{
+			finalize();
+			initialize();
+			var inX = (units/2)-15, inY = height/2;
+			var inXEls = inX-15, inYEls = inY - 7;
+			nHLinesBonds([inX,inY], 1, 2);
+			nElements(["N","O"],[inXEls,inYEls+1,inXEls+49,inYEls+1]);
+			twoHDots([inXEls+0.5,inYEls-6.5]); dot([inXEls-6.5,inYEls+6.5]);
+			fourVDots([inXEls+16+34,inYEls-6.5]);
+			// sDChange.innerHTML = "NO, Nitrogen monoxide";
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "no2": case "NO2": case "nO2": {
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nHLinesBonds([inX,inY], 1, 2);
 			nHLines([inXEls+17.5,inY], 1);
-			nElements(["O","N","O"],[inXEls-67,inYEls,inXEls-6,inYEls,inXEls+54,inYEls]);
-			twoHDots([inXEls-5,inYEls-7.15]);
-			fourVDots([inXEls-65.5,inYEls-7.15]);
-			sixDots([inXEls+55.5,inYEls-7.15],"left",false);
+			nElements(["O","N","O"],[inXEls-67,inYEls+2,inXEls-6,inYEls+2,inXEls+54,inYEls+2]);
+			twoHDots([inXEls-5,inYEls-6.15]);
+			fourVDots([inXEls-65.5,inYEls-6.15]);
+			fourVDots([inXEls+55.5,inYEls-6.15]); dot([inXEls+70.5,inYEls+7]);
+			// sDChange.innerHTML = "NO2^(-), Nitrite ion";
+			bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
+		}
+		break;
+		case "no2-": case "NO2-": case "No2^-": case "No2^(-)": case "nO2^-": case "nO2^(-)": case "no2^-": case "no2^(-)": case "NO2^-":
+		case "NO2^(-)":{
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLinesBonds([inX,inY], 1, 2);
+			nHLines([inXEls+17.5,inY], 1);
+			nElements(["O","N","O"],[inXEls-67,inYEls+2,inXEls-6,inYEls+2,inXEls+54,inYEls+2]);
+			twoHDots([inXEls-5,inYEls-6.15]);
+			fourVDots([inXEls-65.5,inYEls-6.15]);
+			sixDots([inXEls+55.5,inYEls-6.15],"left",false);
 			nElements(["-"],[inXEls+67,inYEls-10]);
-			sDChange.innerHTML = "NO2^(-), Nitrite ion";
+			// sDChange.innerHTML = "NO2^(-), Nitrite ion";
 			bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
 		}
 		break;
 		case "no3-": case "NO3-": case "nO3^-": case "nO3^(-)": case "no3^-": case "NO3^-": case "no3^(-)":
 		case "NO3^(-)":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nHLinesBonds([inX,inY], 1, 2);
 			nHLines([inXEls+17.5,inY], 1);
 			nVLines([inXEls-1,inY+15.5], 1);
-			nElements(["O","N","O","O"],[inXEls-67,inYEls,inXEls-6,inYEls,inXEls+54,inYEls,inXEls-6,inYEls+62.5]);
-			fourVDots([inXEls-65.5,inYEls-7.15]);
-			sixDots([inXEls+55.5,inYEls-7.15],"left",false);
+			nElements(["O","N","O","O"],[inXEls-67,inYEls+2,inXEls-6,inYEls+2,inXEls+54,inYEls+2,inXEls-6,inYEls+62.5]);
+			fourVDots([inXEls-65.5,inYEls-6.15]);
+			sixDots([inXEls+55.5,inYEls-6.15],"left",false);
 			sixDots([inXEls-13,inYEls+64.5],"top",false);
-			nElements(["-","-","+"],[inXEls+67,inYEls-10,inXEls+5,inYEls+53.5, inXEls+5,inYEls-10]);
-			sDChange.innerHTML = "NO3^(-), Nitrate ion";
+			nElements(["-","-","+"],[inXEls+67,inYEls-8,inXEls+5,inYEls+53.5, inXEls+2,inYEls-8]);
+			// sDChange.innerHTML = "NO3^(-), Nitrate ion";
 			bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
+		}
+		break;
+		case "n2": case "N2":{
+			finalize();
+			initialize();
+			var inX = (units/2)-15, inY = height/2;
+			var inXEls = inX-15, inYEls = inY - 7;
+			nHLinesBonds([inX,inY-1], 1, 3);
+			nElements(["N","N"],[inXEls,inYEls+1,inXEls+49,inYEls+1]);
+			twoVDots([inXEls-4,inYEls+1.5]); twoVDots([inXEls+16+47,inYEls+1.5]);
+			// sDChange.innerHTML = "N2, Nitrogen";
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "n2h2": case "N2h2":
+		case "n2H2": case "N2H2":{
+			finalize();
+			initialize();
+			var inX = (units/2)-15, inY = height/2;
+			var inXEls = inX-15, inYEls = inY - 7;
+			nHLinesBonds([inX,inY-1], 1, 2);
+			nHLines([inX-65,inY-1], 1);
+			nHLines([inX+65,inY-1], 1);
+			nElements(["H","N","N","H"],[inXEls-70,inYEls+1,inXEls-8,inYEls+1,inXEls+57.5,inYEls+1,inXEls+119,inYEls+1]);
+			twoHDots([inXEls-7,inYEls-5]); twoHDots([inXEls+58.75,inYEls-5]);
+			// sDChange.innerHTML = "N2, Nitrogen";
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "N2H4":case "n2h4":case "n2H4":case "N2h4":{
+			finalize();
+			initialize();
+			var inX = (units/2)-15, inY = height/2;
+			var inXEls = inX-15, inYEls = inY - 7;
+			nHLines([inX,inY], 1);
+			nVLines([inXEls+5,inY-49], 2);
+			nVLines([inXEls+54,inY-49], 2);
+			nElements(["H","H"],[inXEls,inYEls-60,inXEls+49,inYEls-60]);
+			nElements(["N","N"],[inXEls,inYEls+1,inXEls+49,inYEls+1]);
+			nElements(["H","H"],[inXEls,inYEls+60,inXEls+49,inYEls+60]);
+			twoVDots([inXEls-4,inYEls+1.5]); twoVDots([inXEls+16+47,inYEls+1.5]);
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "n2o": case "N2o":
+		case "n2O": case "N2O":{
+			finalize();
+			initialize();
+			var inX = (units/2)-15, inY = height/2;
+			var inXEls = inX-15, inYEls = inY - 7;
+			nHLinesBonds([inX,inY-1], 1, 3);
+			nHLines([inX,inY-1], 2);
+			nElements(["N","N","O"],[inXEls-4,inYEls+1,inXEls+56.5,inYEls+1,inXEls+117,inYEls+1]);
+			nElements(["+","-"],[inXEls+65,inYEls-9,inXEls+128,inYEls-9]);
+			twoVDots([inXEls-10.5,inYEls+1.5]); sixDots([inXEls+118,inYEls-7], "left", false);
+			// sDChange.innerHTML = "N2, Nitrogen";
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "n2o4": case "N2o4":
+		case "n2O4": case "N2O4":{
+			finalize();
+			initialize();
+			var inX = (units/2)-15, inY = height/2;
+			var inXEls = inX-15, inYEls = inY - 7;
+			nHLines([inX,inY], 1);
+			nVLines([inXEls+5,inY-49], 1);
+			nVLines([inXEls+54,inY-49], 1);
+			nVLinesBonds([inXEls+5+0.25,inY+16], 1, 2);
+			nVLinesBonds([inXEls+54+0.25,inY+16], 1, 2);
+			nElements(["O","O"],[inXEls,inYEls-60,inXEls+49,inYEls-60]);
+			nElements(["N","N"],[inXEls,inYEls+1,inXEls+49,inYEls+1]);
+			nElements(["O","O"],[inXEls,inYEls+60,inXEls+49,inYEls+60]);
+			nElements(["+","+"],[inXEls+10,inYEls+1-10,inXEls+49+10,inYEls+1-10]);
+			nElements(["-","-"],[inXEls+10,inYEls-60-10,inXEls+49+10,inYEls-60-10]);
+			sixDots([inXEls-7.5,inYEls-60+0.5], "bottom", false);sixDots([inXEls+49-7.5,inYEls-60+0.5], "bottom", false);
+			fourHDots([inXEls-7.5,inYEls+60+1]); fourHDots([inXEls+49-7.5,inYEls+60+1]);
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "NaCl": {
+			finalize();
+			initialize();
+			var inX = (units/2)-15, inY = height/2;
+			var inXEls = inX-15, inYEls = inY - 7;
+			nHLinesBonds([inX,inY], 1, 1);
+			nElements(["Na","Cl"],[inXEls-13,inYEls+1.5,inXEls+53,inYEls+1.5]);
+			sixDots([inXEls+21+37.5,inYEls-6], "left", true);
+			// sDChange.innerHTML = "Cl2, Chlorine";
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "OF2":case "Of2": case "oF2": case "of2": {
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 6;
+			nHLinesBonds([inX,inY], 2, 1);
+			sixDots([inXEls-67,inYEls-7.15], "right", false);
+			sixDots([inXEls+55,inYEls-7.15], "left", false);
+			nElements(["F","O","F"],[inXEls-67,inYEls+1,inXEls-5,inYEls+1,inXEls+54,inYEls+1]);
+			fourVDots([inXEls-4,inYEls-7]);
+			bDChange.innerHTML = "";
 		}
 		break;
 		case "oh-": case "OH-": case "oH-": case "Oh-": 
 		case "oh^-": case "oh^(-)": case "oH^-": case "oH^(-)": case "Oh^-": case "Oh^(-)": case "OH^-":
 		case "OH^(-)":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-15, inY = height/2;
 			var inXEls = inX-15, inYEls = inY - 7;
 			nHLinesBonds([inX,inY], 1, 1);
-			nElements(["O","H"],[inXEls,inYEls,inXEls+49,inYEls]);
-			nElements(["-"],[inXEls+9,inYEls-8]);
-			sixDots([inXEls+1,inYEls-6],"right", false);
-			sDChange.innerHTML = "OH^(-), Hydroxide";
+			nElements(["O","H"],[inXEls,inYEls+2,inXEls+49,inYEls+2]);
+			nElements(["-"],[inXEls+9,inYEls-7]);
+			sixDots([inXEls+1,inYEls-5.5],"right", false);
+			// sDChange.innerHTML = "OH^(-), Hydroxide";
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "o2": case "O2":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-15, inY = height/2;
 			var inXEls = inX-15, inYEls = inY - 7;
 			nHLinesBonds([inX,inY], 1, 2);
 			nElements(["O","O"],[inXEls,inYEls+1,inXEls+49,inYEls+1]);
 			fourVDots([inXEls+0.5,inYEls-6.5]); fourVDots([inXEls+16+34,inYEls-6.5]);
-			sDChange.innerHTML = "O2, Oxygen";
+			// sDChange.innerHTML = "O2, Oxygen";
 			bDChange.innerHTML = "";
 		}
 		break;
-		case "PO33-": case "pO33-": case "po33-":
-		case "pO3^-3": case "pO3^(-3)": case "pO3^3-": case "pO3^(3-)": 
-		case "PO3^-3": case "PO3^(-3)": case "PO3^3-": case "PO3^(3-)":{
-			dSChange.innerHTML = initialValueOfDS;
+		case "PBr3":{
+			finalize();
+			initialize();
+			var inX = (units/2)-47.5, inY = height/2;
+			var inXEls = inX+47.5, inYEls = inY - 7;
+			nHLines([inX,inY], 2);
+			nVLines([inXEls,inY-48.5], 1);
+			nElements(["Br","P","Br","Br"],[inXEls-74,inYEls+1,inXEls-4,inYEls+1,inXEls-8,inYEls-60.5,inXEls+55,inYEls+1]);
+			sixDots([inXEls-70,inYEls-6.5],"right",true);
+			sixDots([inXEls+60.5,inYEls-6.5],"left",true);
+			sixDots([inXEls-15,inYEls-60],"bottom",true);
+			twoHDots([inXEls-3.5,inYEls+19.5]);
+			// sDChange.innerHTML = "PO3^(3-), Phosphite ion";
+			bDChange.innerHTML = "";
+		}
+		break;
+		case "PO3-3": case "pO3-3": case "po3-3": case "PO33-": case "pO33-": case "po33-":
+		case "pO3^-3": case "pO3^(-3)": case "PO3^-3": case "PO3^(-3)": 
+		case "pO3^3-": case "pO3^(3-)": case "PO3^3-": case "PO3^(3-)":{
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nHLines([inX,inY], 2);
@@ -857,14 +1540,14 @@ function displayMolecule(molecule) {
 			sixDots([inXEls-12.5,inYEls-59.15],"bottom",false);
 			nElements(["-","-","-"],[inXEls-53,inYEls-10,inXEls+67,inYEls-10,inXEls+7,inYEls-70]);
 			twoHDots([inXEls-3.5,inYEls+16.15]);
-			sDChange.innerHTML = "PO3^(3-), Phosphite ion";
+			// sDChange.innerHTML = "PO3^(3-), Phosphite ion";
 			bDChange.innerHTML = "";
 		}
 		break;
-		case "PO43-": case "pO43-": case "po43-":
-		case "pO4^-3": case "pO4^(-3)": case "pO4^3-": case "pO4^(3-)": 
-		case "PO4^-3": case "PO4^(-3)": case "PO4^3-": case "PO4^(3-)":{
-			dSChange.innerHTML = initialValueOfDS;
+		case "PO4-3": case "pO4-3": case "po4-3":case "pO4^-3": case "pO4^(-3)": case "PO4^-3": case "PO4^(-3)":
+		case "PO43-": case "pO43-": case "po43-":case "pO4^3-": case "pO4^(3-)": case "PO4^3-": case "PO4^(3-)":{
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nHLines([inX,inY], 2);
@@ -876,14 +1559,15 @@ function displayMolecule(molecule) {
 			sixDots([inXEls-12.5,inYEls-59.15],"bottom",false);
 			nElements(["-","-","-"],[inXEls-53,inYEls-10,inXEls+67,inYEls-10,inXEls+7,inYEls-70]);
 			fourHDots([inXEls-12.5,inYEls+62.15]);
-			sDChange.innerHTML = "PO4^(3-), Phosphate ion";
+			// sDChange.innerHTML = "PO4^(3-), Phosphate ion";
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "SCN^(-)": case "sCN^(-)": case "ScN^(-)": case "scN^(-)":
 		case "SCN^-": case "sCN^-": case "ScN^-": case "scN^-":
 		case "SCN-": case "sCN-": case "ScN-": case "scN-":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			var adjust = 35;
@@ -900,12 +1584,13 @@ function displayMolecule(molecule) {
 			fourVDots([inXEls+55,inYEls-5.6+adjust]);
 			nElements(["S","C","N"],[inXEls-67,inYEls+adjust+1,inXEls-6,inYEls+adjust+1,inXEls+54,inYEls+adjust+1]);
 			nElements(["-"],[inXEls+54+10,inYEls+adjust+1-10]);
-			sDChange.innerHTML = "SCN^(-), Thiocyanate ion";
+			// sDChange.innerHTML = "SCN^(-), Thiocyanate ion";
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "sCl2": case "scl2": case "SCl2":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nHLines([inX,inY], 2);
@@ -913,25 +1598,27 @@ function displayMolecule(molecule) {
 			nElements(["Cl","S","Cl"],[inXEls-71,inYEls,inXEls-6,inYEls,inXEls+54,inYEls]);
 			sixDots([inXEls-64.5,inYEls-7.15],"right",true);
 			sixDots([inXEls+61.5,inYEls-7.15],"left",true);
-			sDChange.innerHTML = "SCl2, Sulfur dichloride";
+			// sDChange.innerHTML = "SCl2, Sulfur dichloride";
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "SO2":case "so2": case "sO2":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 6;
 			nHLinesBonds([inX,inY], 2, 2);
 			fourVDots([inXEls-67,inYEls-7.15]);
 			fourVDots([inXEls+55,inYEls-7.15]);
-			nElements(["O","S","O"],[inXEls-67,inYEls,inXEls-5,inYEls,inXEls+54,inYEls]);
+			nElements(["O","S","O"],[inXEls-67,inYEls+1,inXEls-5,inYEls+1,inXEls+54,inYEls+1]);
 			twoHDots([inXEls-4,inYEls-7]);
-			sDChange.innerHTML = "SO2, Sulfur dioxide";
+			// sDChange.innerHTML = "SO2, Sulfur dioxide";
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "SO32-": case "sO3^2-": case "sO3^(2-)": case "SO3^2-": case "SO3^(2-)":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nHLines([inX,inY], 2);
@@ -942,12 +1629,13 @@ function displayMolecule(molecule) {
 			sixDots([inXEls-64.5,inYEls-7.15],"right",false);
 			sixDots([inXEls+55.5,inYEls-7.15],"left",false);
 			twoHDots([inXEls-3.5,inYEls-6]);
-			sDChange.innerHTML = "SO3^(2-), Sulfite ion";
+			// sDChange.innerHTML = "SO3^(2-), Sulfite ion";
 			bDChange.innerHTML = linksToResonance + "<br>" + about("resonance");
 		}
 		break;
 		case "xef2": case "Xef2": case "XeF2": case "XEF2":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nHLines([inX,inY], 2);
@@ -956,13 +1644,13 @@ function displayMolecule(molecule) {
 			sixDots([inXEls-64.5,inYEls-7.15],"right",false);
 			sixDots([inXEls+55.5,inYEls-7.15],"left",false);
 			twoTDots([inXEls-13,inYEls+13], 30); twoTDots([inXEls+6,inYEls+4+13], -30);
-			sDChange.innerHTML = "XeF2, Xenon difluoride";
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "xeF3+": case "xeF3^+":case "xeF3^(+)":case "xef3+": case "xef3^+":case "xef3^(+)":case "Xef3+": case "Xef3^+":case "Xef3^(+)":case "XeF3+":case "XeF3^+":
 		case "XeF3^(+)":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nVLines([inXEls,inY-42.5], 1);
@@ -973,12 +1661,13 @@ function displayMolecule(molecule) {
 			sixDots([inXEls-12,inYEls-52],"bottom",false);
 			twoTDots([inXEls-13,inYEls+13], 30); twoTDots([inXEls+6,inYEls+4+13], -30);
 			nElements(["+"],[inXEls+5,inYEls-10]);
-			sDChange.innerHTML = "XeF3^(+), Xenon trifluoride ion";
+			//sDChange.innerHTML = "XeF3^(+), Xenon trifluoride ion";
 			bDChange.innerHTML = "";
 		}
 		break;
 		case "xeo3": case "XEO3": case "Xeo3": case "XeO3":{
-			dSChange.innerHTML = initialValueOfDS;
+			finalize();
+			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
 			nVLinesBonds([inXEls,inY-42.5], 1, 2);
@@ -989,7 +1678,7 @@ function displayMolecule(molecule) {
 			fourHDots([inXEls-13,inYEls-52],"bottom");
 			twoHDots([inXEls-4.0,inYEls+18.15]);
 			// nElements(["+"],[inXEls+5,inYEls-10]);
-			sDChange.innerHTML = "XeO3, Xenon trioxide";
+			// sDChange.innerHTML = "XeO3, Xenon trioxide";
 			bDChange.innerHTML = "";
 		}
 		break;
@@ -1001,11 +1690,11 @@ function displayMolecule(molecule) {
 			theMolecule = "";
 		break;
 		default:{
-					//initialValueOfDS = "<svg viewbox ='0 0 500 200' id='drawn'></svg>"
-					dSChange.innerHTML = "<span style='position: absolute; font-size: 1.5rem; text-transform: uppercase; text-align: centered; left: 0rem; top: 6.5rem;'> The molecule entered is not saved in our library. Please make sure you have followed the guidelines for syntax, or submit this molecule on the submission on the right so that we can add it. Thanks.</span>";
-					sDChange.innerHTML = "<span style='color:rgba(150,0,0,1); text-decoration: line-through;'>"+molecule+"</span>";
-					bDChange.innerHTML = "";
-				}
+			//initialValueOfDS = "<svg viewbox ='0 0 500 200' id='drawn'></svg>"
+			dSChange.innerHTML = "<div style='position: relative; font-size: 1.5rem; text-align: centered; top: 3.4rem; max-width: 80%; margin: 0 auto;'> <span style='font-size: 2rem; color:rgba(255,0,0,0.8);'>"+molecule+"</span> is not saved in our library.<br><br>Please make sure you have followed the guidelines for syntax, or submit this molecule at the bottom of this page so that we can add it.<br><br>Much thanks. :)</div>";
+			sDChange.innerHTML = "<span style='color:rgba(150,0,0,1); text-decoration: line-through;'>"+molecule+"</span>";
+			bDChange.innerHTML = "";
+		}
 		break;
 	}
 	if (window.mobilecheck()){
@@ -1014,8 +1703,6 @@ function displayMolecule(molecule) {
 	document.getElementById("enterMolecule").value = "";
 	var actualHeight = document.getElementById("smallDisplay").offsetWidth;
 	document.getElementById("smallDisplay").style.height = actualHeight;
-	// document.getElementById("drawingSpace").innerHTML = "<svg viewbox ='0 0 500 200' id='drawn'></svg>";
-	// document.getElementById("smallDisplay").innerHTML = "NH4^(+)";
 }
 
 //----------------------------------------------------------------------------------------------------
