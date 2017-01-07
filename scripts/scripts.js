@@ -4,7 +4,14 @@ window.addEventListener("load", giveWidth);
 window.addEventListener("load", giveHeight);
 window.addEventListener("load", setWidth);
 window.addEventListener("load", setHeight);
-window.addEventListener("load", loadUpData);
+//window.addEventListener("load", loadUpData);
+window.addEventListener("load", function(){
+	setTimeout(function(){
+		data = temp;
+		dataOnSiteKeys = Object.keys(data.onSite);
+		dataToAddKeys = Object.keys(data.toAdd);
+	}, 10);
+});
 window.addEventListener("resize", giveWidth);
 window.addEventListener("scroll", displayBackTo);
 
@@ -32,8 +39,8 @@ function setHeight(){
 	accessIt.style.minHeight = actualHeight;
 	accessIt.style.lineHeight = actualHeight;
 }
-var jsonFile, data, dataOnSiteKeys, dataToAddKeys;
-function ajaxCall(){
+var jsonFile, data, dataOnSiteKeys, dataToAddKeys, temp;
+/*function ajaxCall(){
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function(){
 		if (this.readyState == 4 && this.status == 200) {
@@ -41,7 +48,7 @@ function ajaxCall(){
 			console.log("SUCCESS");
 		}
 	}
-	xhttp.open("POST", "data.json", true);
+	xhttp.open("GET", "data.json", true);
 	xhttp.send();
 }
 function loadUpData(){
@@ -51,8 +58,23 @@ function loadUpData(){
 		dataOnSiteKeys = Object.keys(data.onSite);
 		dataToAddKeys = Object.keys(data.toAdd);
 		console.log("data saved");
-	}, 10);
-}
+	}, 100);
+}*/
+$.ajax({
+	url: 'data.json',
+	dataType: 'json',
+	async: false,
+	cache: false,
+	success: function (data, status){
+		temp = data;
+		// console.log(data);
+		console.log(status);
+	},
+	error: function (xhr, textStatus, err){
+		console.log(xhr);
+		console.log(textStatus);
+	}
+});
 function displayBackTo(){
 	var element = document.getElementById("backTo");
 	var scrollTop = document.body.scrollTop;
