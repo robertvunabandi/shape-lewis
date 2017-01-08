@@ -20,7 +20,7 @@ https://designshack.net/articles/javascript/create-a-simple-autocomplete-with-ht
 http://www.w3schools.com/php/php_ajax_livesearch.asp
 
 CHECK LIST
-BrF2+, BrF2, BrF2-
-NO-? HNO (hyponitrous acid)?
-NO+?
-NO4-? HNO4 (pernitric acid)?
+BrF2+, BrF2, BrF2-, S2O42-,
+NO-? HNO (hyponitrous acid)? NO+? NO4-? HNO4 (pernitric acid)? S2O6-2? **(possible?)
+KI? NaCrO4? ZnCl2? KOH? **(ionic?!)
+KOH? looks like K then OH (not bound)
