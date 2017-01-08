@@ -1,4 +1,4 @@
-#ReadMe.md
+#ReadMe
 
 I started this project in order to help people visualize the Lewis shapes of molecules. 
 
@@ -38,7 +38,7 @@ I can find molecules from multiple places:
 [Grindell](http://web.grinnell.edu/courses/chm/visualization/)  
 [Periodni.com](http://www.periodni.com/solcalc-chemical_compounds.html)  
 
-Here is a list of a few websites that help for making this site happen:
+Here is a list of a few websites that help for making this site happen:  
 [Catalog flatworldknowledge:Line structures](http://catalog.flatworldknowledge.com/bookhub/reader/2547?e=gob-ch12_s04)  
 [Chemistry libretexts:Line structures](http://chem.libretexts.org/Core/Organic_Chemistry/Fundamentals/Structure_of_Organic_Molecules)  
 [Chem.ucla:Resonance](http://www.chem.ucla.edu/~harding/tutorials/resonance/draw_res_str.html)
@@ -47,7 +47,7 @@ Here is a list of a few websites that help for making this site happen:
 [Wikipedia:Line structures](https://en.wikipedia.org/wiki/Skeletal_formula)  
 [WolframAlpha's widget](http://www.wolframalpha.com/widgets/view.jsp?id=689aa5a01c216d8b16ed0250cebdc702)
 
-Here is a list of websites that helped in finding molecules to add and their names:
+Here is a list of websites that helped in finding molecules to add and their names:  
 [Quia.com](https://www.quia.com/jg/125193list.html)
 [Endmemo](http://www.endmemo.com/chem/chemsearch.php)
 [Endmemo: Acid list](http://www.endmemo.com/chem/acidslist.php)
