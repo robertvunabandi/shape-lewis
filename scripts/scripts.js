@@ -532,10 +532,14 @@ function moleculeMatch(nameOfMolecule){
 	test.push("TYPED:" + moleculeFinal);
 	return test;
 }
+function arrayMax(numArray) {return Math.max.apply(null, numArray);}
 //--------------------------------------------------------------------------------------------------
 //This right here is going to be the main function
 //This also needs to be fixed for different browsers and stuffs.
 function displayMolecule(molecule) {
+	/*
+	Data on molecules: http://php.scripts.psu.edu/djh300/cmpsc221/p3s11-pt-data.htm
+	*/
 	theMolecule = molecule;
 	var linksToLineStructures = "links to line structures: <a href='https://en.wikipedia.org/wiki/Skeletal_formula'>Wikipedia</a>, <a href='http://chem.libretexts.org/Core/Organic_Chemistry/Fundamentals/Structure_of_Organic_Molecules'>Chemistry libretexts</a>, and <a href='http://catalog.flatworldknowledge.com/bookhub/reader/2547?e=gob-ch12_s04'> catalog flatworldknowledge</a>.";
 	var linksToResonance = "links to resonance strucutres: <a href='https://en.wikipedia.org/wiki/Resonance_(chemistry)'>Wikipedia</a>, <a href='http://www.chem.ucla.edu/~harding/tutorials/resonance/draw_res_str.html'>Chem.ucla</a>.";
@@ -557,6 +561,112 @@ function displayMolecule(molecule) {
 		sDChange.innerHTML = "SOMETHING";
 		bDChange.innerHTML = "";
 	}*/
+	function grid(hor,nHor,shiftY,SX,DX,ver,nVer,shiftX,SY, DY,dupY,shiftDup){
+		/*
+		ADD THIS LATER: ,dupYs,shiftDupYsX. In case we want to duplicate the Y's (like C2N4)
+		This will draw the lines needed. This requires calling inX and inY before the switch.
+		Initially, we can call the inside. (as done)
+		DX = {d: true, all:true, pos:[]}	//example of DX
+		*/
+		var inX = (units/2), inY = (height/2);
+		var shift, stShift = 65;
+		if (hor){
+			if (nHor % 2 == 0) {shift = -47.5;} else {shift = -15;}
+			if (nHor > 2) {
+				if (nHor % 2 == 0) shift = shift - 65*(nHor-2)/2; else shift = shift - 65*(nHor-1)/2;
+			}
+			if (DX.d){
+				if (DX.all) nHLinesBonds([inX+shift+SX,inY+shiftY], nHor, 2);
+				else {
+					var j = 1, logs = nHor;
+					for (var i = 0; i < DX.pos.length; i++){
+						do {
+							if (DX.pos[i] > j){
+								nHLinesBonds([inX+shift+SX,inY+shiftY], 1, 1); logs--; j++;
+							} else if (DX.pos[i] == j){
+								nHLinesBonds([inX+shift+SX,inY+shiftY], 1, 2); logs--; j++;
+							}
+							if (nHor % 2 == 0) {
+								if (nHor = 2) shift = shift + 65*(nHor)/2;
+								else if (nHor = 4) shift = shift + 65*(nHor-1)/2;
+								else shift = shift + 65*(nHor-2)/2;
+							}
+							else {
+								if (nHor = 3) shift = shift + 65*(nHor-1)/2; else shift = shift + 65*(nHor-2)/2;
+							}
+						} while (j !== DX.pos[i]+1);
+						if (j > arrayMax(DX.pos)) { nHLinesBonds([inX+shift+SX,inY+shiftY], logs, 1); break;}
+					}
+				}
+			}
+			else nHLines([inX+shift+SX,inY+shiftY], nHor);
+		}
+		if (ver){
+			if (nVer % 2 == 0) {shift = -47.5;} else {shift = -15;}
+			if (nVer > 2) {
+				if (nVer % 2 == 0) shift = shift - 65*(nVer-2)/2; else shift = shift - 65*(nVer-1)/2;
+			}
+			if (DY.d){
+				if (DY.all) {
+					if (dupY) {
+						for (x in shiftDup){
+							nVLinesBonds([inX+shiftX+shiftDup[x],inY+shift+SY], nVer, 2);
+						}
+					}
+					nVLinesBonds([inX+shiftX,inY+shift+SY], nVer, 2);
+				}
+				else {
+					var j = 1, logs = nVer;
+					for (var i = 0; i < DY.pos.length; i++){
+						do {
+							if (DY.pos[i] > j){
+								if (dupY) {
+									for (x in shiftDup){
+										nVLinesBonds([inX+shiftX+shiftDup[x],inY+shift+SY], 1, 1);
+									}
+								}
+								nVLinesBonds([inX+shiftX,inY+shift+SY], 1, 1); logs--; j++;
+							} else if (DY.pos[i] == j){
+								if (dupY) {
+									for (x in shiftDup){
+										nVLinesBonds([inX+shiftX+shiftDup[x],inY+shift+SY], 1, 2);
+									}
+								}
+								nVLinesBonds([inX+shiftX,inY+shift+SY], 1, 2); logs--; j++;
+							}
+							if (nVer % 2 == 0) {
+								if (nVer = 2) shift = shift + 65*(nVer)/2;
+								else if (nVer = 4) shift = shift + 65*(nVer-1)/2;
+								else shift = shift + 65*(nVer-2)/2;
+							}
+							else {
+								if (nVer = 3) shift = shift + 65*(nVer-1)/2; else shift = shift + 65*(nVer-2)/2;
+							}
+						} while (j !== DY.pos[i]+1);
+						if (j > arrayMax(DY.pos)) {
+							if (dupY) {
+								for (x in shiftDup){
+									nVLinesBonds([inX+shiftX+shiftDup[x],inY+shift+SY], logs, 1); 
+								}
+							}
+							nVLinesBonds([inX+shiftX,inY+shift+SY], logs, 1); 
+							break;
+						}
+					}
+				}
+			}
+			else {
+				if (dupY) {
+					for (x in shiftDup){
+						nVLines([inX+shiftX+shiftDup[x],inY+shift+SY], nVer);
+					}
+				}
+				nVLines([inX+shiftX,inY+shift+SY], nVer);
+			}
+		}
+	}
+	//inX - 3 - 35, inY - 3.5, Opera, Safari
+	//
 	function initialize(){dSChange.innerHTML = initialValueOfDS;}
 	var molec;
 	function finalize(){
@@ -566,11 +676,18 @@ function displayMolecule(molecule) {
 	}
 	// setTimeout(function(){},10);
 	switch (molecule) {
+		case "XX":{
+			initialize();
+			grid(true, 1, 0, 0, {d:false}, true, 2, -32.5, 0, {d:true, all:false, pos:[1]}, true, [65]);
+			bDChange.innerHTML = "";
+		}
+		break;
 		case "AlCl3":case "alcl3":case "ALCL3":{
 			// dSChange.innerHTML = initialValueOfDS;
 			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
+			// grid(true, 2, 0, 0, {d:false}, true, 1, 0, -32.5, {d:false});
 			nVLines([inXEls,inY-42.5], 1);
 			nHLines([inX,inY], 2);
 			nElements(["Cl","Al","Cl","Cl"],[inXEls-71,inYEls+2.5,inXEls-9,inYEls+2.5,inXEls+53.5,inYEls+2.5,inXEls-9,inYEls-53]);
@@ -813,8 +930,7 @@ function displayMolecule(molecule) {
 			initialize();
 			var inX = (units/2)-47.5, inY = height/2;
 			var inXEls = inX+47.5, inYEls = inY - 7;
-			nHLines([inX,inY], 2);
-			nVLinesBonds([inXEls+1,inY+15.5], 1, 2);
+			nHLines([inX,inY], 2); nVLinesBonds([inXEls+1,inY+15.5], 1, 2);
 			nElements(["O","C","O","O"],[inXEls-67,inYEls+1,inXEls-5,inYEls+1,inXEls+54,inYEls+1,inXEls-4.5,inYEls+60.5]);
 			nElements(["-","-"],[inXEls-53,inYEls-10,inXEls+67,inYEls-10]);
 			fourHDots([inXEls-12.20,inYEls+61.5]);
@@ -832,18 +948,14 @@ function displayMolecule(molecule) {
 			initialize();
 			var inX = (units/2)-15, inY = height/2;
 			var inXEls = inX-15, inYEls = inY - 7;
-			nHLines([inX,inY], 1);
-			nVLines([inXEls+5,inY-49], 1);
-			nVLines([inXEls+54,inY-49], 1);
-			nVLinesBonds([inXEls+5+0.25,inY+16], 1, 2);
-			nVLinesBonds([inXEls+54+0.25,inY+16], 1, 2);
-			nElements(["O","O"],[inXEls,inYEls-60,inXEls+49,inYEls-60]);
-			nElements(["C","C"],[inXEls,inYEls+2.5,inXEls+49,inYEls+2.5]);
-			nElements(["O","O"],[inXEls,inYEls+60,inXEls+49,inYEls+60]);
-			// nElements(["+","+"],[inXEls+10,inYEls+1-10,inXEls+49+10,inYEls+1-10]);
-			nElements(["-","-"],[inXEls+10,inYEls-60-10,inXEls+49+10,inYEls-60-10]);
-			sixDots([inXEls-7.5,inYEls-60+0.5], "bottom", false);sixDots([inXEls+49-7.5,inYEls-60+0.5], "bottom", false);
-			fourHDots([inXEls-7.5,inYEls+60+1]); fourHDots([inXEls+49-7.5,inYEls+60+1]);
+			// nHLines([inX,inY], 1); nVLines([inXEls+5,inY-49], 1); nVLines([inXEls+54,inY-49], 1); nVLinesBonds([inXEls+5+0.25,inY+16], 1, 2); nVLinesBonds([inXEls+54+0.25,inY+16], 1, 2);
+			grid(true, 1, 0, 0, {d:false}, true, 2, -32.5, 0, {d:true, all:false, pos:[2]}, true, [65]);
+			nElements(["O","O"],[inXEls-8,inYEls-60,inXEls+49+8,inYEls-60]);
+			nElements(["C","C"],[inXEls-8,inYEls+2.5,inXEls+49+8,inYEls+2.5]);
+			nElements(["O","O"],[inXEls-8,inYEls+60,inXEls+49+8,inYEls+60]);
+			nElements(["-","-"],[inXEls+2,inYEls-70,inXEls+67,inYEls-60-10]);
+			sixDots([inXEls-15.5,inYEls-60+0.5], "bottom", false);sixDots([inXEls+49.5,inYEls-60+0.5], "bottom", false);
+			fourHDots([inXEls-15.5,inYEls+60+1]); fourHDots([inXEls+49.5,inYEls+60+1]);
 			bDChange.innerHTML = "";
 		}
 		break;
